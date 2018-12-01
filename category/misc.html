@@ -1,76 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="en">
 	<head>
-		<link href="http://gmpg.org/xfn/11" rel="profile">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<!-- Enable responsiveness on mobile devices-->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+		<title>Science-Code = Fun</title>
+		<meta name="description" content="">
+		<meta name="author" content="Ernek">
 
-		<title>Science-Code = Fun - misc category</title>
+		<link rel="stylesheet" href="/theme/css/foundation.css" />
+		<link rel="stylesheet" href="/theme/css/pygment/monokai.css" />
+		<link rel="stylesheet" href="/theme/css/custom.css" />
 
-		<!-- CSS -->
-		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
-		<link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Abril+Fatface|PT+Sans:400,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet">
 
-		<link rel="stylesheet" href="/theme/css/poole.css" />
-		<link rel="stylesheet" href="/theme/css/hyde.css" />
-		<link rel="stylesheet" href="/theme/css/syntax.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<script src="/theme/js/modernizr.js"></script>
 
-		<!-- RSS -->
-		<link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+		<!-- Feeds -->
+		<link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Science-Code = Fun Atom Feed" />
+
+
+		<!-- mathjax config similar to math.stackexchange -->
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			jax: ["input/TeX", "output/HTML-CSS"],
+			tex2jax: {
+				inlineMath: [ ['$', '$'] ],
+				displayMath: [ ['$$', '$$']],
+				processEscapes: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+			},
+			messageStyle: "none",
+			"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+		});
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	</head>
+	<body>
+		<div class="off-canvas-wrap">
+			<div class="inner-wrap">
+				<!-- mobile top bar to activate nav -->
+				<nav class="tab-bar show-for-small">
+					<section class="left-small">
+						<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+					</section>
 
-	<body class="theme-base-0d">
-<div class="sidebar">
-	<div class="container sidebar-sticky">
-		<div class="sidebar-about">
+					<section class="middle tab-bar-section">
+						<h1 class="title">Science-Code&nbsp;=&nbsp;Fun</h1>
+					</section>
+				</nav>
 
-			<h1>
-				<a href="/">
-					<img class="profile-picture" src="/images/">
-					Science-Code = Fun
-				</a>
-			</h1>
-			<p class="lead"></p>
-			<p class="lead"> </p>
-			<p></p>
-		</div>
-		<nav class="sidebar-nav">
-			<a class="sidebar-nav-item" href="mailto:guilherme.sft@gmail.com">
-				<i class="fa fa-envelope"></i>
-			</a>
-			<a class="sidebar-nav-item" href="#">
-				<i class="fa fa-You can add links in your config file"></i>
-			</a>
-			<a class="sidebar-nav-item" href="#">
-				<i class="fa fa-Another social link"></i>
-			</a>
-			<a class="sidebar-nav-item" href="">
-				<i class="fa fa-feed"></i>
-			</a>
-		</nav>
-	</div>
-</div>		<div class="content container">
-	<div class="posts">
-			<div class="post">
-				<h1 class="post-title" href="/hello-world.html#hello-world">
-					<a href="/hello-world.html#hello-world">Hello World!</a>
-				</h1>
-				<span class="post-date">Thu 29 November 2018</span>
-				<p>
-					<p>The summary of the post</p>
-				</p>
-				<a class="read-more" href="hello-world.html">Continue reading »</a>
-			</div>
-	</div>
-	<div class="pagination">
-		<span class="pagination-item older">Older</span>
-		<span class="pagination-item newer">Newer</span>
+				<!-- mobile side bar nav -->
+				<aside class="left-off-canvas-menu">
+					<ul class="off-canvas-list">
+						<li><a href="">Home</a></li>
+						<li><label>Categories</label></li>
+							<li class="active"><a href="/category/misc.html">misc</a></li>
 
-	</div>
-		</div>
+						<li><label>Links</label></li>
+							<li><a href="http://getpelican.com/">Pelican</a></li>
+							<li><a href="http://python.org/">Python.org</a></li>
+							<li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+							<li><a href="#">You can modify those links in your config file</a></li>
+
+
+
+						<li><label>Social</label></li>
+							<li><a href="#">Another social link</a></li>
+							<li><a href="#">You can add links in your config file</a></li>
+					</ul>	
+				</aside>
+
+				<!-- top bar nav -->
+				<nav class="top-bar hide-for-small-only" data-topbar>
+					<ul class="title-area">
+						<li class="name">
+							<h1><a href="/">Science-Code = Fun</a></h1>
+						</li>
+					</ul>
+
+					<section class="top-bar-section">
+						<ul class="left">
+								<li class="active"><a href="/category/misc.html">misc</a></li>
+						</ul>
+                        <ul class="right">                                                                                                                                           
+                                                                                                                                             
+                        </ul>  
+					</section>
+				</nav>
+
+				<!-- Main Page Content and Sidebar -->
+				<section class="main-section">
+					<div class="row">
+						<!-- Main Content -->
+						<div class="medium-9 small-12 columns" role="content">
+							<div class="row">
+								<div class="small-12 columns">
+									<h2>Category: misc</h2>
+								</div>
+							</div>
+
+<article>
+	<h3><a href="/hello-world.html">Hello World!</a></h3>
+	<h6>Written by <a href="/author/ernek.html">Ernek</a> in <a href="/category/misc.html">misc</a> on Thu 29 November 2018. Tags: <a href="/tag/first.html">first</a>, <a href="/tag/misc.html">misc</a>, </h6>
+	<p>The summary of the post</p>
+		<p class="continue"><a href="/hello-world.html">Continue reading &raquo;</a></p>
+</article>
+<hr />
+
+
+						</div>
+						<!-- End Main Content -->
+						<!-- Sidebar -->
+						<aside class="medium-3 hide-for-small-only columns">
+							<div class="panel">
+								<h5>Links</h5>
+								<ul class="side-nav">
+									<li><a href="http://getpelican.com/">Pelican</a></li>
+									<li><a href="http://python.org/">Python.org</a></li>
+									<li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+									<li><a href="#">You can modify those links in your config file</a></li>
+								</ul>
+							</div>
+
+							<div class="panel">
+								<h5>Tags</h5>
+								<ul class="tag-cloud">
+								</ul>
+							</div>
+
+
+							<div class="panel">
+								<h5>Social</h5>
+								<ul class="side-nav">
+									<li><a href="#">Another social link</a></li>
+									<li><a href="#">You can add links in your config file</a></li>
+								</ul>
+							</div>
+						</aside>
+						<!-- End Sidebar -->
+					</div>
+
+					<!-- Footer -->
+					<footer class="row">
+						<div class="medium-9 small-12">
+							<hr/>
+							<p class="text-center">Powered by <a href="http://getpelican.com">Pelican</a> and <a href="http://foundation.zurb.com/">Zurb Foundation</a>. Theme by <a href="http://hamaluik.com">Kenton Hamaluik</a>.</p>
+						</div>
+					</footer>
+					<!-- End Footer -->
+				</section>
+				<a class="exit-off-canvas"></a>
+			</div><!--off-canvas inner-->
+		</div><!--off-canvas wrap-->
+
+		<script src="/theme/js/jquery.js"></script>
+		<script src="/theme/js/foundation.min.js"></script>
+		<script>
+			$(document).foundation();
+		</script>
 	</body>
 </html>
