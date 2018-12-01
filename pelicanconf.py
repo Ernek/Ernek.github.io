@@ -11,7 +11,7 @@ PATH = 'content'
 TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
-THEME = "pelican-themes/backdrop"
+THEME = "pelican-themes/foundation-default-colours"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -31,7 +31,7 @@ SOCIAL = (('You can add links in your config file', '#'),
           ('Another social link', '#'),)
 
 DEFAULT_PAGINATION = 10
-PAGINATED_DIRECT_TEMPLATES = ('categories', 'archives')
+#PAGINATED_DIRECT_TEMPLATES = ('categories', 'archives')
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
