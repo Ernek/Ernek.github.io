@@ -1,5 +1,3 @@
-.lang="markdown" 
-
 Title: Hello World!
 Date: 2018-11-29 11:05
 Modified: 2018-11-29 11:10
