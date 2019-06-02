@@ -5,6 +5,6 @@ Category: misc
 Tags: first, misc
 Slug: hello-world
 Authors: Ernek
-Summary: First post of this website. 
+Summary: Test post of this website. 
 
 Hello World! This is the *first post* from my Pelican blog. **YAY!**
