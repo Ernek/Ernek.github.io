@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'Ernek'
-SITENAME = 'Science-Code = Fun'
+SITENAME = 'SciCode'
 SITEURL = ''
 
 PATH = 'content'
@@ -11,7 +11,7 @@ PATH = 'content'
 TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
-THEME = "pelican-themes/foundation-default-colours"
+THEME = "pelican-themes/attila/attila"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
