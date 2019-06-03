@@ -3,9 +3,9 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'Ernek'
-SITENAME = 'SciCode'
-SITETITLE = 'Ernek\'s Blog'
-SITEURL = 'https://ernek.github.io/'
+SITENAME = 'Ernek\'s Blog'
+SITETITLE = SITENAME
+SITEURL = 'http://localhost:8000'
 SITESUBTITLE = 'Theoretical and Computational Chemistry'
 SITEDESCRIPTION = 'A place to save my learning journey'
 
