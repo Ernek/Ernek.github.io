@@ -4,7 +4,10 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Ernek'
 SITENAME = 'SciCode'
+SITETITLE = 'Ernek\'s Blog'
 SITEURL = ''
+SITESUBTITLE = 'Theoretical and Computational Chemistry'
+SITEDESCRIPTION = 'A place to save my learning journey'
 
 PATH = 'content'
 
