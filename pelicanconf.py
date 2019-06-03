@@ -10,6 +10,16 @@ SITESUBTITLE = 'Theoretical and Computational Chemistry'
 SITEDESCRIPTION = 'A place to save my learning journey'
 SITELOGO = "/images/avatar02.jpg"
 
+USE_FOLDER_AS_CATEGORY = False
+MAIN_MENU = True
+HOME_HIDE_TAGS = False
+
+MENUITEMS = (('Archives', '/archives.html'),
+             ('Categories', '/categories.html'),
+             ('Tags', '/tags.html'),)
+
+DELETE_OUTPUT_DIRECTORY = False
+
 PATH = 'content'
 
 TIMEZONE = 'America/Los_Angeles'
@@ -25,14 +35,11 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('Python.org', 'http://python.org/'),)
 
 # Social widget
-SOCIAL = (('Twitter (#ErnestoCheco)', 'https://twitter.com/ErnestoCheco'),
-          ('Another social link', '#'),)
+SOCIAL = (('twitter', 'https://twitter.com/ErnestoCheco'),
+          ('github', 'https://github.com/Ernek'),)
 
 DEFAULT_PAGINATION = 10
 #PAGINATED_DIRECT_TEMPLATES = ('categories', 'archives')
