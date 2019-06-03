@@ -11,7 +11,7 @@ PATH = 'content'
 TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
-THEME = "pelican-themes/attila"
+THEME = "pelican-themes/foundation-default-colours"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
