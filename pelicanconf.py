@@ -8,7 +8,7 @@ SITETITLE = SITENAME
 SITEURL = 'http://localhost:8000'
 SITESUBTITLE = 'Theoretical and Computational Chemistry'
 SITEDESCRIPTION = 'A place to save my learning journey'
-SITELOGO = '/images/avatar00.jpg'
+SITELOGO = "/images/avatar00.jpg"
 
 PATH = 'content'
 
