@@ -5,7 +5,7 @@ Category: misc
 Tags: second, misc, blog
 Slug: Blog set up
 Authors: Ernek
-Summary: Directions on how to create a Blog similart to this one. 
+Summary: Directions on how to create a Blog similar to this one. 
 
 Start and see
 
