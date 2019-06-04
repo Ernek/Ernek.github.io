@@ -11,16 +11,6 @@ SITESUBTITLE = 'Theoretical and Computational Chemistry'
 SITEDESCRIPTION = 'A place to save my learning journey'
 SITELOGO = "/images/avatar02.jpg"
 
-#USE_FOLDER_AS_CATEGORY = False
-MAIN_MENU = True
-#HOME_HIDE_TAGS = False
-DISABLE_URL_HASH = True
-
-MENUITEMS = (('Archives', '/archives.html'),
-             ('Categories', '/categories.html'),
-             ('Tags', '/tags.html'),)
-
-DELETE_OUTPUT_DIRECTORY = False
 
 PATH = 'content'
 
@@ -37,6 +27,18 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
+
+# Main menu configuration 
+MAIN_MENU = True
+DISABLE_URL_HASH = True
+#USE_FOLDER_AS_CATEGORY = False
+#HOME_HIDE_TAGS = False
+
+MENUITEMS = (('Archives', '/archives.html'),
+             ('Categories', '/categories.html'),
+             ('Tags', '/tags.html'),)
+
+#DELETE_OUTPUT_DIRECTORY = False
 
 # Blogroll
 LINKS = (('Python.org', 'http://python.org/'),)
