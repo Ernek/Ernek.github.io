@@ -112,7 +112,7 @@ We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussi
 <h2>Input File</h2>
 <p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
 <div class="highlight"><pre><span></span>%chk<span class="o">=</span>test_run                    <span class="c1"># Checkpoint file needed to save info needed to restart job    </span>
-<span class="se">\#</span>P hf/cc-pVDZ                   <span class="c1"># Job directives . Hartree Fock single point calc with cc-pVDZ basis sets </span>
+<span class="p">&amp;</span><span class="c1">#35P hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
                                  <span class="c1"># Empty line ... This empty line is needed</span>
 job name                         <span class="c1"># Job name descriptor</span>
                                  <span class="c1"># Empty line ... This empty line is needed</span>
@@ -126,7 +126,7 @@ O <span class="m">2</span>.621193 <span class="m">13</span>.123312 <span class="
 H <span class="m">2</span>.124667 <span class="m">13</span>.404712 <span class="m">8</span>.410292
 O <span class="m">3</span>.723529 <span class="m">10</span>.689556 <span class="m">8</span>.948275
 H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="m">8</span>.387248
-                                 <span class="c1"># Empty line ... This empty line is needed</span>
+                                 <span class="c1"># Empty line ... This empty line is needed                   </span>
 </pre></div>
   </div>
   <div class="tag-cloud">
