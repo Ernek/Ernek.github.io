@@ -109,6 +109,25 @@
   <div>
     <p>In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
 We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussian09 is already installed and available to licensed users.</p>
+<h2>Input File</h2>
+<p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
+<div class="highlight"><pre><span></span>%chk<span class="o">=</span>test_run                    <span class="c1"># Checkpoint file needed to save info needed to restart job    </span>
+<span class="se">\#</span>P hf/cc-pVDZ                   <span class="c1"># Job directives . Hartree Fock single point calc with cc-pVDZ basis sets </span>
+                                 <span class="c1"># Empty line ... This empty line is needed</span>
+job name                         <span class="c1"># Job name descriptor</span>
+                                 <span class="c1"># Empty line ... This empty line is needed</span>
+<span class="m">0</span> <span class="m">1</span>                              <span class="c1"># Charge Spin</span>
+Al <span class="m">4</span>.158934 <span class="m">12</span>.319204 <span class="m">8</span>.139289   <span class="c1"># Atomic-symbol x-coord y-coord z-coord</span>
+O <span class="m">5</span>.204656 <span class="m">12</span>.33906 <span class="m">6</span>.772874
+H <span class="m">5</span>.524529 <span class="m">11</span>.426276 <span class="m">6</span>.453445
+O <span class="m">4</span>.893735 <span class="m">13</span>.419199 <span class="m">9</span>.302062
+H <span class="m">5</span>.82317 <span class="m">13</span>.510635 <span class="m">9</span>.461939
+O <span class="m">2</span>.621193 <span class="m">13</span>.123312 <span class="m">7</span>.624101
+H <span class="m">2</span>.124667 <span class="m">13</span>.404712 <span class="m">8</span>.410292
+O <span class="m">3</span>.723529 <span class="m">10</span>.689556 <span class="m">8</span>.948275
+H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="m">8</span>.387248
+                                 <span class="c1"># Empty line ... This empty line is needed</span>
+</pre></div>
   </div>
   <div class="tag-cloud">
     <p>
