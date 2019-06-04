@@ -11,9 +11,10 @@ SITESUBTITLE = 'Theoretical and Computational Chemistry'
 SITEDESCRIPTION = 'A place to save my learning journey'
 SITELOGO = "/images/avatar02.jpg"
 
-USE_FOLDER_AS_CATEGORY = False
+#USE_FOLDER_AS_CATEGORY = False
 MAIN_MENU = True
-HOME_HIDE_TAGS = False
+#HOME_HIDE_TAGS = False
+DISABLE_URL_HASH = True
 
 MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
