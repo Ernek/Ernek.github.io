@@ -38,7 +38,7 @@ MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
              ('Tags', '/tags.html'),)
 
-#DELETE_OUTPUT_DIRECTORY = False
+DELETE_OUTPUT_DIRECTORY = False
 
 # Blogroll
 LINKS = (('Python.org', 'http://python.org/'),)
