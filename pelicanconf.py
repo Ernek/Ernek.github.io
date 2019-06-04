@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Ernek'
 SITENAME = 'Ernesto\'s Blog'
+RELATIVE_URLS = False
 SITETITLE = SITENAME
 SITEURL = 'http://localhost:8000'
 SITESUBTITLE = 'Theoretical and Computational Chemistry'
