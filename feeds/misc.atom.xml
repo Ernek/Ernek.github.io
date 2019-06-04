@@ -4,7 +4,7 @@ We will run Gaussian on the WSU HPC cluster &lt;strong&gt;Kamiak&lt;/strong&gt; 
 &lt;h2&gt;Input File&lt;/h2&gt;
 &lt;p&gt;All directives of your job as well as the system's molecular geometry should be contained in the &lt;strong&gt;input&lt;/strong&gt; file. Here is an example of a &lt;strong&gt;HF single point energy calculation&lt;/strong&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%chk&lt;span class="o"&gt;=&lt;/span&gt;test_run                    &lt;span class="c1"&gt;# Checkpoint file needed to save info needed to restart job    &lt;/span&gt;
-&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="c1"&gt;#35P hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets&lt;/span&gt;
+&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="c1"&gt;#35P; hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets&lt;/span&gt;
                                  &lt;span class="c1"&gt;# Empty line ... This empty line is needed&lt;/span&gt;
 job name                         &lt;span class="c1"&gt;# Job name descriptor&lt;/span&gt;
                                  &lt;span class="c1"&gt;# Empty line ... This empty line is needed&lt;/span&gt;

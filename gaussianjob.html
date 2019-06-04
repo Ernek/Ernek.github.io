@@ -112,7 +112,7 @@ We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussi
 <h2>Input File</h2>
 <p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
 <div class="highlight"><pre><span></span>%chk<span class="o">=</span>test_run                    <span class="c1"># Checkpoint file needed to save info needed to restart job    </span>
-<span class="p">&amp;</span><span class="c1">#35P hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
+<span class="p">&amp;</span><span class="c1">#35P; hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
                                  <span class="c1"># Empty line ... This empty line is needed</span>
 job name                         <span class="c1"># Job name descriptor</span>
                                  <span class="c1"># Empty line ... This empty line is needed</span>
