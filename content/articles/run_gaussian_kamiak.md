@@ -16,7 +16,7 @@ All directives of your job as well as the system's molecular geometry should be 
 
 ```bash
 %chk=test_run                    # Checkpoint file needed to save info needed to restart job    
-&#35P; hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets
+\&#35P; hf/cc-pVDZ                   # Job directives . Hartree Fock single point calc with cc-pVDZ basis sets
                                  # Empty line ... This empty line is needed
 job name                         # Job name descriptor
                                  # Empty line ... This empty line is needed
