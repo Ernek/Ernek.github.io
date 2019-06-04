@@ -31,8 +31,8 @@ AUTHOR_FEED_RSS = None
 # Main menu configuration 
 MAIN_MENU = True
 DISABLE_URL_HASH = True
-#USE_FOLDER_AS_CATEGORY = False
-#HOME_HIDE_TAGS = False
+USE_FOLDER_AS_CATEGORY = False
+HOME_HIDE_TAGS = False
 
 MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
