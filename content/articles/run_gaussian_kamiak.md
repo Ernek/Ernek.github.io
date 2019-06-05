@@ -20,7 +20,7 @@ All directives of your job as well as the system's molecular geometry should be 
                                  ! Empty line ... This empty line is needed
 job name                         ! Job name descriptor
                                  ! Empty line ... This empty line is needed
-0 -1                              ! Charge Spin
+-1 1                             ! Charge Spin
 Al 4.158934 12.319204 8.139289   ! Atomic-symbol x-coord y-coord z-coord
 O 5.204656 12.33906 6.772874
 H 5.524529 11.426276 6.453445
@@ -54,8 +54,7 @@ foutend='.out'
 
 export GAUSS_SCRDIR="$(mkworkspace -q)"  ###Creates a workspace
 
-g09 < ${finit}${fend} > \                ###Running gaussian
-      ${finit}${foutend}                                                        
+g09 < ${finit}${fend} > ${finit}${foutend}                                                        
 
 ```
 Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run **Gaussian** with this submission script we would type:
