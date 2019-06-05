@@ -19,7 +19,7 @@ TIMEZONE = 'America/Los_Angeles'
 PLUGIN_PATHS = ['/Users/ernesto/Main/Mywebsite/Ernek.github.io/pelican-themes-extra/pelican-plugins']
 
 DEFAULT_LANG = 'en'
-THEME = "Flex"
+THEME = "/Users/ernesto/Main/Mywebsite/Ernek.github.io/pelican-themes-extra/Flex"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
