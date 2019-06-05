@@ -8,7 +8,7 @@ We will run Gaussian on the WSU HPC cluster &lt;strong&gt;Kamiak&lt;/strong&gt; 
                                  ! Empty line ... This empty line is needed
 job name                         ! Job name descriptor
                                  ! Empty line ... This empty line is needed
-&lt;span class="m"&gt;0&lt;/span&gt; -1                              ! Charge Spin
+-1 &lt;span class="m"&gt;1&lt;/span&gt;                             ! Charge Spin
 Al &lt;span class="m"&gt;4&lt;/span&gt;.158934 &lt;span class="m"&gt;12&lt;/span&gt;.319204 &lt;span class="m"&gt;8&lt;/span&gt;.139289   ! Atomic-symbol x-coord y-coord z-coord
 O &lt;span class="m"&gt;5&lt;/span&gt;.204656 &lt;span class="m"&gt;12&lt;/span&gt;.33906 &lt;span class="m"&gt;6&lt;/span&gt;.772874
 H &lt;span class="m"&gt;5&lt;/span&gt;.524529 &lt;span class="m"&gt;11&lt;/span&gt;.426276 &lt;span class="m"&gt;6&lt;/span&gt;.453445
@@ -40,8 +40,7 @@ module load gaussian          &lt;span class="c1"&gt;###Load gaussian module on 
 
 &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;GAUSS_SCRDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mkworkspace -q&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;  &lt;span class="c1"&gt;###Creates a workspace&lt;/span&gt;
 
-g09 &amp;lt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &amp;gt; &lt;span class="se"&gt;\ &lt;/span&gt;               &lt;span class="c1"&gt;###Running gaussian&lt;/span&gt;
-      &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;                                                        
+g09 &amp;lt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;                                                        
 &lt;/pre&gt;&lt;/div&gt;
 
 

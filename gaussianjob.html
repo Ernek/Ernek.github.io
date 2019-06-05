@@ -116,7 +116,7 @@ We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussi
                                  ! Empty line ... This empty line is needed
 job name                         ! Job name descriptor
                                  ! Empty line ... This empty line is needed
-<span class="m">0</span> -1                              ! Charge Spin
+-1 <span class="m">1</span>                             ! Charge Spin
 Al <span class="m">4</span>.158934 <span class="m">12</span>.319204 <span class="m">8</span>.139289   ! Atomic-symbol x-coord y-coord z-coord
 O <span class="m">5</span>.204656 <span class="m">12</span>.33906 <span class="m">6</span>.772874
 H <span class="m">5</span>.524529 <span class="m">11</span>.426276 <span class="m">6</span>.453445
@@ -148,8 +148,7 @@ module load gaussian          <span class="c1">###Load gaussian module on Kamiak
 
 <span class="nb">export</span> <span class="nv">GAUSS_SCRDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>mkworkspace -q<span class="k">)</span><span class="s2">&quot;</span>  <span class="c1">###Creates a workspace</span>
 
-g09 &lt; <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">fend</span><span class="si">}</span> &gt; <span class="se">\ </span>               <span class="c1">###Running gaussian</span>
-      <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">foutend</span><span class="si">}</span>                                                        
+g09 &lt; <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">fend</span><span class="si">}</span> &gt; <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">foutend</span><span class="si">}</span>                                                        
 </pre></div>
 
 
