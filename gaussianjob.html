@@ -111,22 +111,22 @@
 We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussian09 is already installed and available to licensed users.</p>
 <h2>Input File</h2>
 <p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
-<div class="highlight"><pre><span></span><span class="na">%chk</span><span class="o">=</span><span class="s">test_run                    ! Checkpoint file needed to save info needed to restart job    </span>
-<span class="c">#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
-                                 <span class="c">! Empty line ... This empty line is needed</span>
-<span class="err">job</span> <span class="err">name</span>                         <span class="err">!</span> <span class="err">Job</span> <span class="err">name</span> <span class="err">descriptor</span>
-                                 <span class="c">! Empty line ... This empty line is needed</span>
-<span class="err">0</span> <span class="err">-1</span>                              <span class="err">!</span> <span class="err">Charge</span> <span class="err">Spin</span>
-<span class="err">Al</span> <span class="err">4.158934</span> <span class="err">12.319204</span> <span class="err">8.139289</span>   <span class="err">!</span> <span class="err">Atomic-symbol</span> <span class="err">x-coord</span> <span class="err">y-coord</span> <span class="err">z-coord</span>
-<span class="err">O</span> <span class="err">5.204656</span> <span class="err">12.33906</span> <span class="err">6.772874</span>
-<span class="err">H</span> <span class="err">5.524529</span> <span class="err">11.426276</span> <span class="err">6.453445</span>
-<span class="err">O</span> <span class="err">4.893735</span> <span class="err">13.419199</span> <span class="err">9.302062</span>
-<span class="err">H</span> <span class="err">5.82317</span> <span class="err">13.510635</span> <span class="err">9.461939</span>
-<span class="err">O</span> <span class="err">2.621193</span> <span class="err">13.123312</span> <span class="err">7.624101</span>
-<span class="err">H</span> <span class="err">2.124667</span> <span class="err">13.404712</span> <span class="err">8.410292</span>
-<span class="err">O</span> <span class="err">3.723529</span> <span class="err">10.689556</span> <span class="err">8.948275</span>
-<span class="err">H</span> <span class="err">3.223616</span> <span class="err">10.091097</span> <span class="err">8.387248</span>
-                                 <span class="c">! Empty line ... This empty line is needed                   </span>
+<div class="highlight"><pre><span></span>%chk<span class="o">=</span>test_run                    ! Checkpoint file needed to save info needed to restart job    
+<span class="c1">#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
+                                 ! Empty line ... This empty line is needed
+job name                         ! Job name descriptor
+                                 ! Empty line ... This empty line is needed
+<span class="m">0</span> -1                              ! Charge Spin
+Al <span class="m">4</span>.158934 <span class="m">12</span>.319204 <span class="m">8</span>.139289   ! Atomic-symbol x-coord y-coord z-coord
+O <span class="m">5</span>.204656 <span class="m">12</span>.33906 <span class="m">6</span>.772874
+H <span class="m">5</span>.524529 <span class="m">11</span>.426276 <span class="m">6</span>.453445
+O <span class="m">4</span>.893735 <span class="m">13</span>.419199 <span class="m">9</span>.302062
+H <span class="m">5</span>.82317 <span class="m">13</span>.510635 <span class="m">9</span>.461939
+O <span class="m">2</span>.621193 <span class="m">13</span>.123312 <span class="m">7</span>.624101
+H <span class="m">2</span>.124667 <span class="m">13</span>.404712 <span class="m">8</span>.410292
+O <span class="m">3</span>.723529 <span class="m">10</span>.689556 <span class="m">8</span>.948275
+H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="m">8</span>.387248
+                                 ! Empty line ... This empty line is needed                   
 </pre></div>
   </div>
   <div class="tag-cloud">
