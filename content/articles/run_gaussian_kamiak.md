@@ -14,7 +14,7 @@ We will run Gaussian on the WSU HPC cluster **Kamiak** where Gaussian09 is alrea
 
 All directives of your job as well as the system's molecular geometry should be contained in the **input** file. Here is an example of a **HF single point energy calculation**:
 
-```properties
+```bash
 %chk=test_run                    ! Checkpoint file needed to save info needed to restart job    
 #P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets
                                  ! Empty line ... This empty line is needed
