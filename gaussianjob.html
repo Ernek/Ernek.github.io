@@ -128,6 +128,39 @@ O <span class="m">3</span>.723529 <span class="m">10</span>.689556 <span class="
 H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="m">8</span>.387248
                                  ! Empty line ... This empty line is needed                   
 </pre></div>
+
+
+<p>With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need to run our first Gaussian calculation on the <strong>Kamiak</strong> cluster is a submission script to launch our calculation on <strong>Kamiak</strong> nodes.</p>
+<h2>Submission Script for Gaussian on Kamiak</h2>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1">#SBATCH --job-name=test       ###Job Name</span>
+<span class="c1">#SBATCH --partition=kamiak    ###Partition on which to run</span>
+<span class="c1">#SBATCH --nodes=1             ###Number of nodes to use</span>
+<span class="c1">#SBATCH --ntasks-per-node=20   ###Number of tasks per node (aka MPI processes)</span>
+<span class="c1">#SBATCH --cpus-per-task=1    ###Number of cpus per task (aka OpenMP threads)</span>
+<span class="c1">#SBATCH --time=7-00:00:00</span>
+module load gaussian          <span class="c1">###Load gaussian module on Kamiak</span>
+
+<span class="nv">finit</span><span class="o">=</span><span class="nv">$1</span>                      <span class="c1">###The base name of your input file  </span>
+<span class="nv">fend</span><span class="o">=</span><span class="s1">&#39;.com&#39;</span>                     
+<span class="nv">foutend</span><span class="o">=</span><span class="s1">&#39;.out&#39;</span>
+
+<span class="nb">export</span> <span class="nv">GAUSS_SCRDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>mkworkspace -q<span class="k">)</span><span class="s2">&quot;</span>  <span class="c1">###Creates a workspace</span>
+
+g09 &lt; <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">fend</span><span class="si">}</span> &gt; <span class="se">\ </span>               <span class="c1">###Running gaussian</span>
+      <span class="si">${</span><span class="nv">finit</span><span class="si">}${</span><span class="nv">foutend</span><span class="si">}</span>                                                        
+</pre></div>
+
+
+<p>Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run <strong>Gaussian</strong> with this submission script we would type:</p>
+<div class="highlight"><pre><span></span>sbatch sub_g09.slurm gaussian_test     <span class="c1">### &quot;gaussian_test&quot; is the base name of our input file  </span>
+</pre></div>
+
+
+<p>Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
+Let's look at some of its elements before we explain one example with a bit more complicated workflow.</p>
+<h2>Output File</h2>
   </div>
   <div class="tag-cloud">
     <p>
