@@ -32,3 +32,39 @@ O 3.723529 10.689556 8.948275
 H 3.223616 10.091097 8.387248
                                  ! Empty line ... This empty line is needed                   
 ```
+
+With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need to run our first Gaussian calculation on the **Kamiak** cluster is a submission script to launch our calculation on **Kamiak** nodes.
+
+## Submission Script for Gaussian on Kamiak
+
+```bash
+#!/bin/bash
+
+#SBATCH --job-name=test       ###Job Name
+#SBATCH --partition=kamiak    ###Partition on which to run
+#SBATCH --nodes=1             ###Number of nodes to use
+#SBATCH --ntasks-per-node=20   ###Number of tasks per node (aka MPI processes)
+#SBATCH --cpus-per-task=1    ###Number of cpus per task (aka OpenMP threads)
+#SBATCH --time=7-00:00:00
+module load gaussian          ###Load gaussian module on Kamiak
+
+finit=$1                      ###The base name of your input file  
+fend='.com'                     
+foutend='.out'
+
+export GAUSS_SCRDIR="$(mkworkspace -q)"  ###Creates a workspace
+
+g09 < ${finit}${fend} > \                ###Running gaussian
+      ${finit}${foutend}                                                        
+
+```
+Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run **Gaussian** with this submission script we would type:
+
+```bash
+sbatch sub_g09.slurm gaussian_test     ### "gaussian_test" is the base name of our input file  
+```
+
+Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
+Let's look at some of its elements before we explain one example with a bit more complicated workflow.
+
+## Output File

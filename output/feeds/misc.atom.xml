@@ -19,4 +19,37 @@ H &lt;span class="m"&gt;2&lt;/span&gt;.124667 &lt;span class="m"&gt;13&lt;/span&
 O &lt;span class="m"&gt;3&lt;/span&gt;.723529 &lt;span class="m"&gt;10&lt;/span&gt;.689556 &lt;span class="m"&gt;8&lt;/span&gt;.948275
 H &lt;span class="m"&gt;3&lt;/span&gt;.223616 &lt;span class="m"&gt;10&lt;/span&gt;.091097 &lt;span class="m"&gt;8&lt;/span&gt;.387248
                                  ! Empty line ... This empty line is needed                   
-&lt;/pre&gt;&lt;/div&gt;</content><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry><entry><title>Setting up your Blog</title><link href="https://ernek.github.io/Blog%20set%20up.html" rel="alternate"></link><published>2019-06-02T18:00:00-07:00</published><updated>2019-06-02T18:02:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-02:/Blog set up.html</id><summary type="html">&lt;p&gt;Directions on how to create a Blog similar to this one.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Start and see&lt;/p&gt;</content><category term="second"></category><category term="misc"></category><category term="blog"></category></entry><entry><title>Hello World!</title><link href="https://ernek.github.io/hello-world.html" rel="alternate"></link><published>2018-11-29T11:05:00-08:00</published><updated>2018-11-29T11:10:00-08:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2018-11-29:/hello-world.html</id><summary type="html">&lt;p&gt;Test post of this website.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hello World! This is the &lt;em&gt;first post&lt;/em&gt; from my Pelican blog. &lt;strong&gt;YAY!&lt;/strong&gt;&lt;/p&gt;</content><category term="first"></category><category term="misc"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need to run our first Gaussian calculation on the &lt;strong&gt;Kamiak&lt;/strong&gt; cluster is a submission script to launch our calculation on &lt;strong&gt;Kamiak&lt;/strong&gt; nodes.&lt;/p&gt;
+&lt;h2&gt;Submission Script for Gaussian on Kamiak&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="c1"&gt;#SBATCH --job-name=test       ###Job Name&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --partition=kamiak    ###Partition on which to run&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --nodes=1             ###Number of nodes to use&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --ntasks-per-node=20   ###Number of tasks per node (aka MPI processes)&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --cpus-per-task=1    ###Number of cpus per task (aka OpenMP threads)&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --time=7-00:00:00&lt;/span&gt;
+module load gaussian          &lt;span class="c1"&gt;###Load gaussian module on Kamiak&lt;/span&gt;
+
+&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;                      &lt;span class="c1"&gt;###The base name of your input file  &lt;/span&gt;
+&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.com&amp;#39;&lt;/span&gt;                     
+&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.out&amp;#39;&lt;/span&gt;
+
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;GAUSS_SCRDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mkworkspace -q&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;  &lt;span class="c1"&gt;###Creates a workspace&lt;/span&gt;
+
+g09 &amp;lt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &amp;gt; &lt;span class="se"&gt;\ &lt;/span&gt;               &lt;span class="c1"&gt;###Running gaussian&lt;/span&gt;
+      &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;                                                        
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run &lt;strong&gt;Gaussian&lt;/strong&gt; with this submission script we would type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sbatch sub_g09.slurm gaussian_test     &lt;span class="c1"&gt;### &amp;quot;gaussian_test&amp;quot; is the base name of our input file  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
+Let's look at some of its elements before we explain one example with a bit more complicated workflow.&lt;/p&gt;
+&lt;h2&gt;Output File&lt;/h2&gt;</content><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry><entry><title>Setting up your Blog</title><link href="https://ernek.github.io/Blog%20set%20up.html" rel="alternate"></link><published>2019-06-02T18:00:00-07:00</published><updated>2019-06-02T18:02:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-02:/Blog set up.html</id><summary type="html">&lt;p&gt;Directions on how to create a Blog similar to this one.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Start and see&lt;/p&gt;</content><category term="second"></category><category term="misc"></category><category term="blog"></category></entry><entry><title>Hello World!</title><link href="https://ernek.github.io/hello-world.html" rel="alternate"></link><published>2018-11-29T11:05:00-08:00</published><updated>2018-11-29T11:10:00-08:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2018-11-29:/hello-world.html</id><summary type="html">&lt;p&gt;Test post of this website.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hello World! This is the &lt;em&gt;first post&lt;/em&gt; from my Pelican blog. &lt;strong&gt;YAY!&lt;/strong&gt;&lt;/p&gt;</content><category term="first"></category><category term="misc"></category></entry></feed>
