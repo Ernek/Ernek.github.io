@@ -111,22 +111,22 @@
 We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussian09 is already installed and available to licensed users.</p>
 <h2>Input File</h2>
 <p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
-<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">chk</span><span class="o">=</span><span class="n">test_run</span>                    <span class="err">!</span> <span class="n">Checkpoint</span> <span class="nb">file</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">save</span> <span class="n">info</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">restart</span> <span class="n">job</span>    
-<span class="c1">#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
-                                 <span class="err">!</span> <span class="n">Empty</span> <span class="n">line</span> <span class="o">...</span> <span class="n">This</span> <span class="n">empty</span> <span class="n">line</span> <span class="ow">is</span> <span class="n">needed</span>
-<span class="n">job</span> <span class="n">name</span>                         <span class="err">!</span> <span class="n">Job</span> <span class="n">name</span> <span class="n">descriptor</span>
-                                 <span class="err">!</span> <span class="n">Empty</span> <span class="n">line</span> <span class="o">...</span> <span class="n">This</span> <span class="n">empty</span> <span class="n">line</span> <span class="ow">is</span> <span class="n">needed</span>
-<span class="mi">0</span> <span class="mi">1</span>                              <span class="err">!</span> <span class="n">Charge</span> <span class="n">Spin</span>
-<span class="n">Al</span> <span class="mf">4.158934</span> <span class="mf">12.319204</span> <span class="mf">8.139289</span>   <span class="err">!</span> <span class="n">Atomic</span><span class="o">-</span><span class="n">symbol</span> <span class="n">x</span><span class="o">-</span><span class="n">coord</span> <span class="n">y</span><span class="o">-</span><span class="n">coord</span> <span class="n">z</span><span class="o">-</span><span class="n">coord</span>
-<span class="n">O</span> <span class="mf">5.204656</span> <span class="mf">12.33906</span> <span class="mf">6.772874</span>
-<span class="n">H</span> <span class="mf">5.524529</span> <span class="mf">11.426276</span> <span class="mf">6.453445</span>
-<span class="n">O</span> <span class="mf">4.893735</span> <span class="mf">13.419199</span> <span class="mf">9.302062</span>
-<span class="n">H</span> <span class="mf">5.82317</span> <span class="mf">13.510635</span> <span class="mf">9.461939</span>
-<span class="n">O</span> <span class="mf">2.621193</span> <span class="mf">13.123312</span> <span class="mf">7.624101</span>
-<span class="n">H</span> <span class="mf">2.124667</span> <span class="mf">13.404712</span> <span class="mf">8.410292</span>
-<span class="n">O</span> <span class="mf">3.723529</span> <span class="mf">10.689556</span> <span class="mf">8.948275</span>
-<span class="n">H</span> <span class="mf">3.223616</span> <span class="mf">10.091097</span> <span class="mf">8.387248</span>
-                                 <span class="err">!</span> <span class="n">Empty</span> <span class="n">line</span> <span class="o">...</span> <span class="n">This</span> <span class="n">empty</span> <span class="n">line</span> <span class="ow">is</span> <span class="n">needed</span>                   
+<div class="highlight"><pre><span></span><span class="na">%chk</span><span class="o">=</span><span class="s">test_run                    ! Checkpoint file needed to save info needed to restart job    </span>
+<span class="c">#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets</span>
+                                 <span class="c">! Empty line ... This empty line is needed</span>
+<span class="err">job</span> <span class="err">name</span>                         <span class="err">!</span> <span class="err">Job</span> <span class="err">name</span> <span class="err">descriptor</span>
+                                 <span class="c">! Empty line ... This empty line is needed</span>
+<span class="err">0</span> <span class="err">-1</span>                              <span class="err">!</span> <span class="err">Charge</span> <span class="err">Spin</span>
+<span class="err">Al</span> <span class="err">4.158934</span> <span class="err">12.319204</span> <span class="err">8.139289</span>   <span class="err">!</span> <span class="err">Atomic-symbol</span> <span class="err">x-coord</span> <span class="err">y-coord</span> <span class="err">z-coord</span>
+<span class="err">O</span> <span class="err">5.204656</span> <span class="err">12.33906</span> <span class="err">6.772874</span>
+<span class="err">H</span> <span class="err">5.524529</span> <span class="err">11.426276</span> <span class="err">6.453445</span>
+<span class="err">O</span> <span class="err">4.893735</span> <span class="err">13.419199</span> <span class="err">9.302062</span>
+<span class="err">H</span> <span class="err">5.82317</span> <span class="err">13.510635</span> <span class="err">9.461939</span>
+<span class="err">O</span> <span class="err">2.621193</span> <span class="err">13.123312</span> <span class="err">7.624101</span>
+<span class="err">H</span> <span class="err">2.124667</span> <span class="err">13.404712</span> <span class="err">8.410292</span>
+<span class="err">O</span> <span class="err">3.723529</span> <span class="err">10.689556</span> <span class="err">8.948275</span>
+<span class="err">H</span> <span class="err">3.223616</span> <span class="err">10.091097</span> <span class="err">8.387248</span>
+                                 <span class="c">! Empty line ... This empty line is needed                   </span>
 </pre></div>
   </div>
   <div class="tag-cloud">
