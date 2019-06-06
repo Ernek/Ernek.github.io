@@ -160,14 +160,14 @@ g09 &lt; <span class="si">${</span><span class="nv">finit</span><span class="si"
 <p>Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
 Let's look at some of its elements before we explain one example with a bit more complicated workflow.</p>
 <h2>Output File</h2>
-<p>After the job has run to completion you can check the "gaussian_test.out" output-file located in the folder where you launched your calculation from. You can check the <strong>"Normal termination of Gaussian..."</strong> sentence looking at the end of the output file.<br>
+<p>After the job has run to completion you can check the "gaussian_test.out" output-file located in the folder where you launched your calculation from. You can check the <strong>"Normal termination of Gaussian..."</strong> sentence at the end of the output file.<br>
 The HF Energy after several SCF cycles can normally be found by searching for <strong>"SCF Done:  E(RHF)"</strong>:</p>
 <div class="highlight"><pre><span></span>grep -H <span class="s1">&#39;SCF Done:  E(RHF)&#39;</span> gaussian_test.out
 </pre></div>
 
 
 <p>There are many other interesting properties you will find in the output file i.e Atomic Mulliken partial charges, info about dipole moments etc...</p>
-<p>For more info about <strong>input</strong> options or general examples for each type of calculation you can check Gaussian's website directly <a href="http://gaussian.com/keywords/">here</a>:<code>http://gaussian.com/keywords/</code></p>
+<p>For more info about <strong>input</strong> options or general examples for each type of calculation you can check Gaussian's website directly <a href="http://gaussian.com/keywords/">here</a> : <code>http://gaussian.com/keywords/</code></p>
   </div>
   <div class="tag-cloud">
     <p>
