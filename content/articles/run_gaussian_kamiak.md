@@ -33,7 +33,7 @@ H 3.223616 10.091097 8.387248
                                  ! Empty line ... This empty line is needed                   
 ```
 
-With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need to run our first Gaussian calculation on the **Kamiak** cluster is a submission script to launch our calculation on **Kamiak** nodes.
+With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need in order to run our first Gaussian calculation on the **Kamiak** cluster is a submission script to launch our calculation on **Kamiak** nodes.
 
 ## Submission Script for Gaussian on Kamiak
 
@@ -76,4 +76,6 @@ grep -H 'SCF Done:  E(RHF)' gaussian_test.out
 ```
 There are many other interesting properties you will find in the output file i.e Atomic Mulliken partial charges, info about dipole moments etc...
 
-For more info about **input** options or general examples for each type of calculation you can check Gaussian's website directly [here](http://gaussian.com/keywords/) : `http://gaussian.com/keywords/`
+For more info about **input** options or general examples for each type of calculation you can check Gaussian's website directly [here](http://gaussian.com/keywords/) : `http://gaussian.com/keywords/`.
+
+Files related to this simple Gaussian calculation can be found [here]{https://github.com/Ernek/NMR/tree/master/hf-run}. (note: no output file provided)
