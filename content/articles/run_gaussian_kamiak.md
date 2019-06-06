@@ -78,4 +78,4 @@ There are many other interesting properties you will find in the output file i.e
 
 For more info about **input** options or general examples for each type of calculation you can check Gaussian's website directly [here](http://gaussian.com/keywords/) : `http://gaussian.com/keywords/`.
 
-Files related to this simple Gaussian calculation can be found [here]{https://github.com/Ernek/NMR/tree/master/hf-run}. (note: no output file provided)
+Files related to this simple Gaussian calculation can be found [here](https://github.com/Ernek/NMR/tree/master/hf-run). (note: no output file provided)
