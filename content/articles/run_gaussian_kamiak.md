@@ -7,6 +7,8 @@ Slug: gaussianjob
 Authors: Ernek
 Summary: How to run a job with Gaussian on Kamiak HPC cluster at WSU. Submission script, input and output files.
 
+# Starting with Gaussian  
+
 In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
 We will run Gaussian on the WSU HPC cluster **Kamiak** where Gaussian09 is already installed and available to licensed users.
 
@@ -79,3 +81,16 @@ There are many other interesting properties you will find in the output file i.e
 For more info about **input** options or general examples for each type of calculation you can check Gaussian's website directly [here](http://gaussian.com/keywords/) : `http://gaussian.com/keywords/`.
 
 Files related to this simple Gaussian calculation can be found [here](https://github.com/Ernek/NMR/tree/master/hf-run). (note: no output file provided)
+
+## Exploring different basis sets and QM methods with Gaussian
+
+Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family).
+
+### Generating the Input File
+
+My strategy to automate this task was to create a python code with the following algorithm in mind:
+
+    1. Read the molecular geometry of interest from an .xyz file
+    2. Generate the input file containing said .xyz coordinates and job directives
+      + Generating a single input file for each QM/basis sets combination
+    3. Generate a Gaussian submissions script associated with each previously generated input file  
