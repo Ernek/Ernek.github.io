@@ -63,7 +63,7 @@ The HF Energy after several SCF cycles can normally be found by searching for &l
 &lt;p&gt;Files related to this simple Gaussian calculation can be found &lt;a href="https://github.com/Ernek/NMR/tree/master/hf-run"&gt;here&lt;/a&gt;. (note: no output file provided)&lt;/p&gt;
 &lt;h2&gt;Exploring different basis sets and QM methods with Gaussian&lt;/h2&gt;
 &lt;p&gt;Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.&lt;/p&gt;
-&lt;h3&gt;Generating the Input File&lt;/h3&gt;
+&lt;h3&gt;Generating the Input and Job-submission files&lt;/h3&gt;
 &lt;p&gt;My strategy to automate this task was to create a python code with the following algorithm in mind:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1. Read the molecular geometry of interest from an .xyz file
 2. Generate the input file containing said .xyz coordinates and job directives
@@ -294,4 +294,21 @@ H &lt;span class="m"&gt;3&lt;/span&gt;.223616 &lt;span class="m"&gt;10&lt;/span&
     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Default method. Generating input with single point energy calculation&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;charge&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;spin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry><entry><title>Setting up your Blog</title><link href="https://ernek.github.io/Blog%20set%20up.html" rel="alternate"></link><published>2019-06-02T18:00:00-07:00</published><updated>2019-06-02T18:02:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-02:/Blog set up.html</id><summary type="html">&lt;p&gt;Directions on how to create a Blog similar to this one.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Start and see&lt;/p&gt;</content><category term="second"></category><category term="misc"></category><category term="blog"></category></entry><entry><title>Hello World!</title><link href="https://ernek.github.io/hello-world.html" rel="alternate"></link><published>2018-11-29T11:05:00-08:00</published><updated>2018-11-29T11:10:00-08:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2018-11-29:/hello-world.html</id><summary type="html">&lt;p&gt;Test post of this website.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hello World! This is the &lt;em&gt;first post&lt;/em&gt; from my Pelican blog. &lt;strong&gt;YAY!&lt;/strong&gt;&lt;/p&gt;</content><category term="first"></category><category term="misc"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After running this code you can launch the jobs using the generated submission scripts.
+Remember to create an environment on Kamiak to install necessary python modules&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda create -n env_name
+conda activate env_name
+conda install pandas
+conda install django
+.
+.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This code runs with the latests versions of python 3 since it uses "formatted string literals" (f-string methods).
+You can find this python code in one piece in one of my Github repositories: &lt;a href="https://github.com/Ernek/NMR/tree/master/nmr-run"&gt;https://github.com/Ernek/NMR/tree/master/nmr-run&lt;/a&gt; . In its current version it explores HF, MP2, BLYP and PBE methods and uses a combination of Al core-valence basis sets (aug-/cc-pC[D,T,]VZ) combined with cc-pV[D,T,Q]Z for oxygen [O] and hydrogen [H] atoms. &lt;/p&gt;
+&lt;p&gt;Details about the code functionality are limited to most fundamental aspects. Test your outputs at your own discretion.&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;</content><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry><entry><title>Setting up your Blog</title><link href="https://ernek.github.io/Blog%20set%20up.html" rel="alternate"></link><published>2019-06-02T18:00:00-07:00</published><updated>2019-06-02T18:02:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-02:/Blog set up.html</id><summary type="html">&lt;p&gt;Directions on how to create a Blog similar to this one.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Start and see&lt;/p&gt;</content><category term="second"></category><category term="misc"></category><category term="blog"></category></entry><entry><title>Hello World!</title><link href="https://ernek.github.io/hello-world.html" rel="alternate"></link><published>2018-11-29T11:05:00-08:00</published><updated>2018-11-29T11:10:00-08:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2018-11-29:/hello-world.html</id><summary type="html">&lt;p&gt;Test post of this website.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hello World! This is the &lt;em&gt;first post&lt;/em&gt; from my Pelican blog. &lt;strong&gt;YAY!&lt;/strong&gt;&lt;/p&gt;</content><category term="first"></category><category term="misc"></category></entry></feed>

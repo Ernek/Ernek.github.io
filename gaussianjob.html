@@ -171,7 +171,7 @@ The HF Energy after several SCF cycles can normally be found by searching for <s
 <p>Files related to this simple Gaussian calculation can be found <a href="https://github.com/Ernek/NMR/tree/master/hf-run">here</a>. (note: no output file provided)</p>
 <h2>Exploring different basis sets and QM methods with Gaussian</h2>
 <p>Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.</p>
-<h3>Generating the Input File</h3>
+<h3>Generating the Input and Job-submission files</h3>
 <p>My strategy to automate this task was to create a python code with the following algorithm in mind:</p>
 <div class="highlight"><pre><span></span>1. Read the molecular geometry of interest from an .xyz file
 2. Generate the input file containing said .xyz coordinates and job directives
@@ -403,6 +403,23 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Default method. Generating input with single point energy calculation&quot;</span><span class="p">)</span>
     <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
 </pre></div>
+
+
+<p>After running this code you can launch the jobs using the generated submission scripts.
+Remember to create an environment on Kamiak to install necessary python modules</p>
+<div class="highlight"><pre><span></span>conda create -n env_name
+conda activate env_name
+conda install pandas
+conda install django
+.
+.
+</pre></div>
+
+
+<p>This code runs with the latests versions of python 3 since it uses "formatted string literals" (f-string methods).
+You can find this python code in one piece in one of my Github repositories: <a href="https://github.com/Ernek/NMR/tree/master/nmr-run">https://github.com/Ernek/NMR/tree/master/nmr-run</a> . In its current version it explores HF, MP2, BLYP and PBE methods and uses a combination of Al core-valence basis sets (aug-/cc-pC[D,T,]VZ) combined with cc-pV[D,T,Q]Z for oxygen [O] and hydrogen [H] atoms. </p>
+<p>Details about the code functionality are limited to most fundamental aspects. Test your outputs at your own discretion.</p>
+<p>Have fun!</p>
   </div>
   <div class="tag-cloud">
     <p>
