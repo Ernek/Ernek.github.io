@@ -107,8 +107,7 @@
 
 
   <div>
-    <h1>Starting with Gaussian</h1>
-<p>In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
+    <p>In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
 We will run Gaussian on the WSU HPC cluster <strong>Kamiak</strong> where Gaussian09 is already installed and available to licensed users.</p>
 <h2>Input File</h2>
 <p>All directives of your job as well as the system's molecular geometry should be contained in the <strong>input</strong> file. Here is an example of a <strong>HF single point energy calculation</strong>:</p>
@@ -171,13 +170,238 @@ The HF Energy after several SCF cycles can normally be found by searching for <s
 <p>For more info about <strong>input</strong> options or general examples for each type of calculation you can check Gaussian's website directly <a href="http://gaussian.com/keywords/">here</a> : <code>http://gaussian.com/keywords/</code>.</p>
 <p>Files related to this simple Gaussian calculation can be found <a href="https://github.com/Ernek/NMR/tree/master/hf-run">here</a>. (note: no output file provided)</p>
 <h2>Exploring different basis sets and QM methods with Gaussian</h2>
-<p>Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family).</p>
+<p>Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.</p>
 <h3>Generating the Input File</h3>
 <p>My strategy to automate this task was to create a python code with the following algorithm in mind:</p>
 <div class="highlight"><pre><span></span>1. Read the molecular geometry of interest from an .xyz file
 2. Generate the input file containing said .xyz coordinates and job directives
   + Generating a single input file for each QM/basis sets combination
 3. Generate a Gaussian submissions script associated with each previously generated input file
+</pre></div>
+
+
+<p>The .xyz file should be on the same folder of our python code (I will get into the python code in a moment) and shold look like this:</p>
+<div class="highlight"><pre><span></span><span class="m">9</span>
+
+Al <span class="m">4</span>.158934 <span class="m">12</span>.319204 <span class="m">8</span>.139289   
+O <span class="m">5</span>.204656 <span class="m">12</span>.33906 <span class="m">6</span>.772874
+H <span class="m">5</span>.524529 <span class="m">11</span>.426276 <span class="m">6</span>.453445
+O <span class="m">4</span>.893735 <span class="m">13</span>.419199 <span class="m">9</span>.302062
+H <span class="m">5</span>.82317 <span class="m">13</span>.510635 <span class="m">9</span>.461939
+O <span class="m">2</span>.621193 <span class="m">13</span>.123312 <span class="m">7</span>.624101
+H <span class="m">2</span>.124667 <span class="m">13</span>.404712 <span class="m">8</span>.410292
+O <span class="m">3</span>.723529 <span class="m">10</span>.689556 <span class="m">8</span>.948275
+H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="m">8</span>.387248
+</pre></div>
+
+
+<p>We can save it as "al-oh_4_config.xyz". The first line is the number of atoms and the block of data is similar to the format we used in the <strong>input</strong> file above. Leave that empty line between the number of atoms (N) and the start of the coordinates' data (this is the format of .xyz files).</p>
+<p>Let's look at our python code by sections. The first snippet of code is just to import modules.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># coding: utf-8</span>
+
+<span class="c1"># Code to transform an .xyz snap file to Gaussian input exploring several Basis Sets and QM methods</span>
+
+<span class="c1">#%%</span>
+<span class="c1"># Importing modules ######################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">fnmatch</span>              <span class="c1"># To read files</span>
+<span class="kn">from</span> <span class="nn">django.utils.text</span> <span class="kn">import</span> <span class="n">slugify</span>   <span class="c1"># To convert special characters to valid file_path names</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">unidecode</span> <span class="kn">import</span> <span class="n">unidecode</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">argparse</span>  
+</pre></div>
+
+
+<p>We need to use core-valence Dunning basis sets for Al. These basis sets are not included in the default keywords of Gaussian software. We need to explicitly include basis-sets functions' coefficients and exponents for each atom in the input file (i.e we cannot use hf/cc-pCVZ in the input because cc-pCVZ basis sets keyword will not be recognized by Gaussian).   </p>
+<p>We make use of a cloned repository of basis sets containing the EMSL Basis-Sets Database (you can find the basis_set_exchange repository <a href="https://github.com/aoterodelaroza/emsl_basis_set_library">here</a> )</p>
+<p>Let's define the some functions that will be necessary to create our input files:</p>
+<div class="highlight"><pre><span></span><span class="c1">#%%</span>
+<span class="c1"># Functions   ############################################################################################</span>
+
+<span class="k">def</span> <span class="nf">u_slugify</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A custom version of slugify that retains non-ascii characters. The purpose of this</span>
+<span class="sd">        function in the application is to make folder names readable by command line tools.&quot;&quot;&quot;</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="c1"># remove trailing whitespace</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\*&#39;</span><span class="p">,</span> <span class="s1">&#39;-pol&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace * for text pol=polarization funcitons</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\+&#39;</span><span class="p">,</span> <span class="s1">&#39;-dif&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace + for text dif=diffuse funcitons</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\(&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace left parenthesis with dash</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[?,:!@#~`=$%^&amp;\)\[\]{}&lt;&gt;]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># remove some characters altogether</span>
+        <span class="k">return</span> <span class="n">txt</span>
+
+<span class="k">def</span> <span class="nf">get_bse_local</span><span class="p">(</span><span class="n">loc_basis</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A function to extract element basis sets data from local EMSL database located</span>
+<span class="sd">        in /data/clark/ernesto/bss/emsl_basis_set_library/gbs &quot;&quot;&quot;</span>
+        <span class="n">addrs</span> <span class="o">=</span> <span class="s1">&#39;/data/clark/ernesto/bss/emsl_basis_set_library/gbs/&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">addrs</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">loc_basis</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.gbs&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fbasis</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">fbasis</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">bs_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">element</span><span class="p">:</span>
+                    <span class="n">oidx</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">oline</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">oidx</span><span class="p">]</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="n">oline</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;****&#39;</span><span class="p">:</span>
+                        <span class="n">bs_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oline</span><span class="p">)</span>
+                        <span class="n">oidx</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">oline</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">oidx</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">bs_list</span>
+</pre></div>
+
+
+<p>The second function contains a variable "addrs" that should be equal to the path where you will save the basis-sets EMSL Database repository (note you will have to clone the repo on Kamiak from <a href="https://github.com/aoterodelaroza/emsl_basis_set_library">here</a>).</p>
+<p>Now we can define our Main function. Our code creates folders for each combination of Method and Basis-sets and generates the corresponding input files. Additionally, the code creates the corresponding Gaussian submission scripts ready to be launched on Kamiak cluster with no additional flags.  </p>
+<div class="highlight"><pre><span></span><span class="c1">#%%</span>
+
+<span class="c1"># Main Function -- Program  #########################################################################</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">key_run_01</span><span class="p">):</span>
+
+    <span class="n">key_method_01</span> <span class="o">=</span> <span class="s1">&#39;giao&#39;</span>
+
+    <span class="c1">#Create dictionary with QM methods to be used in Gaussian calculation</span>
+    <span class="n">functionals</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hf&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;hf&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;mp2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mp2&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;gga&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pbe&#39;</span><span class="p">,</span><span class="s1">&#39;blyp&#39;</span><span class="p">]</span>
+                  <span class="p">}</span>
+    <span class="c1">#Create dictionary with basis sets to explore with each QM method</span>
+    <span class="n">basis_sets</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;core_valence&#39;</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="s1">&#39;dunning&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cc-pVDZ&#39;</span><span class="p">,</span><span class="s1">&#39;cc-pVTZ&#39;</span><span class="p">,</span><span class="s1">&#39;cc-pVQZ&#39;</span><span class="p">]</span>
+                 <span class="p">}</span>
+
+    <span class="n">core_valence_basis</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="s1">&#39;cc-pCV&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;DZ&#39;</span><span class="p">,</span><span class="s1">&#39;TZ&#39;</span><span class="p">,</span><span class="s1">&#39;QZ&#39;</span><span class="p">]))</span>
+    <span class="n">add_val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">core_valence_basis</span><span class="p">:</span>
+        <span class="n">add_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">add_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;aug-&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="n">basis_sets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;core_valence&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">add_val</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+                    <span class="n">basis_sets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>  <span class="c1"># get Current Working Directory</span>
+
+    <span class="c1"># Initializing input file reading and outputting file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">N</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span><span class="n">fval</span> <span class="ow">in</span> <span class="n">functionals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fval</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">for</span> <span class="n">bkey</span><span class="p">,</span><span class="n">bval</span> <span class="ow">in</span> <span class="n">basis_sets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">bkey</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">if</span>  <span class="n">bkey</span> <span class="o">==</span> <span class="s1">&#39;core_valence&#39;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">bval</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">bkey</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+                        <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+
+                        <span class="n">al_bse</span> <span class="o">=</span> <span class="n">get_bse_local</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;Al&#39;</span><span class="p">)</span>
+
+                        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">basis_sets</span><span class="p">[</span><span class="s1">&#39;dunning&#39;</span><span class="p">][</span><span class="n">indx</span><span class="p">]</span> <span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">basis_sets</span><span class="p">[</span><span class="s1">&#39;dunning&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;5&#39;</span><span class="p">]:</span>
+                            <span class="n">out_fname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.com&#39;</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">bkey</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+                            <span class="n">o_bse</span> <span class="o">=</span> <span class="n">get_bse_local</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">)</span>
+                            <span class="n">h_bse</span> <span class="o">=</span> <span class="n">get_bse_local</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">)</span>
+                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+                                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%c</span><span class="s1">hk=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="n">f</span><span class="s2">&quot;#P {key_run_01}={key_method_01} {i}/Gen&quot;</span>                              
+                                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">spin</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                             
+                                            <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+                                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">al_bse</span><span class="p">))</span>
+                                            <span class="o">+</span> <span class="s1">&#39;****</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">o_bse</span><span class="p">))</span>
+                                            <span class="o">+</span> <span class="s1">&#39;****</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">h_bse</span><span class="p">))</span>
+                                            <span class="o">+</span> <span class="s1">&#39;****</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                        <span class="p">)</span>
+
+                            <span class="n">sub_fname</span> <span class="o">=</span> <span class="s1">&#39;sub_g09&#39;</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.slurm&#39;</span>
+                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sub_fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sub_out</span><span class="p">:</span>
+                                <span class="n">sub_out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                                   
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --job-name=&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;   ###Job Name&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --partition=clark,kamiak,cas  ###Partition on which to run&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --nodes=1           ###Number of nodes to use&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --ntasks-per-node=20 ###Number of tasks per node (aka MPI processes)&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --cpus-per-task=1   ###Number of cpus per task (aka OpenMP threads)&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;#SBATCH --time=7-00:00:00&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;module load gaussian&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;finit=&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span>
+<span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;fend=&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;.com&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;foutend=&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span> <span class="s1">&#39;.out&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;export GAUSS_SCRDIR=&quot;$(mkworkspace -q)&quot; &#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                              <span class="o">+</span><span class="s1">&#39;g09 &lt; ${finit}${fend} &gt; ${finit}${foutend}&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                     
+                                              <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                            <span class="p">)</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+</pre></div>
+
+
+<p>and finally the last bit to make our code modular and define some flags to specify for each molecular system. Flags include:</p>
+<div class="highlight"><pre><span></span>1. Name of the .xyz file
+2. Total Charge of the system
+3. Spin state of the system
+4. Method:
+    + HF single point calculation , if no flag present
+    + NMR shielding tensor calculation , if option &quot;-m nmr&quot; is included
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#%%    </span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enter the xyz filename, i.e &quot;aloh4.xyz&quot; &#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;charge&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enter the system total charge, i.e &quot;-1&quot; or &quot;1&quot; &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;spin&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enter spin state of the whole system i.e &quot;1&quot; &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--method&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enter job directive, i.e &quot;nmr&quot;;&#39;</span> \
+                        <span class="o">+</span><span class="s1">&#39;if no arg passed defaults to single point energy calc&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nmr&#39;</span><span class="p">])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Method selected is: {args.method}&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Default method. Generating input with single point energy calculation&quot;</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
 </pre></div>
   </div>
   <div class="tag-cloud">
