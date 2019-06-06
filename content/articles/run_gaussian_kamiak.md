@@ -84,7 +84,7 @@ Files related to this simple Gaussian calculation can be found [here](https://gi
 
 Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.
 
-### Generating the Input File
+### Generating the Input and Job-submission files
 
 My strategy to automate this task was to create a python code with the following algorithm in mind:
 
@@ -327,3 +327,22 @@ if __name__ == '__main__':
     main(args.filename, args.charge, args.spin, args.method)
 
 ```
+
+After running this code you can launch the jobs using the generated submission scripts.
+Remember to create an environment on Kamiak to install necessary python modules
+
+```bash
+conda create -n env_name
+conda activate env_name
+conda install pandas
+conda install django
+.
+.
+
+```
+This code runs with the latests versions of python 3 since it uses "formatted string literals" (f-string methods).
+You can find this python code in one piece in one of my Github repositories: [https://github.com/Ernek/NMR/tree/master/nmr-run](https://github.com/Ernek/NMR/tree/master/nmr-run) . In its current version it explores HF, MP2, BLYP and PBE methods and uses a combination of Al core-valence basis sets (aug-/cc-pC[D,T,]VZ) combined with cc-pV[D,T,Q]Z for oxygen [O] and hydrogen [H] atoms. 
+
+Details about the code functionality are limited to most fundamental aspects. Test your outputs at your own discretion.
+
+Have fun!
