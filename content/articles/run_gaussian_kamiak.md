@@ -67,3 +67,13 @@ Running this job should generate an output-file named "gaussian_test.out" that w
 Let's look at some of its elements before we explain one example with a bit more complicated workflow.
 
 ## Output File
+
+After the job has run to completion you can check the "gaussian_test.out" output-file located in the folder where you launched your calculation from. You can check the **"Normal termination of Gaussian..."** sentence looking at the end of the output file.  
+The HF Energy after several SCF cycles can normally be found by searching for **"SCF Done:  E(RHF)"**:
+
+```bash
+grep -H 'SCF Done:  E(RHF)' gaussian_test.out
+```
+There are many other interesting properties you will find in the output file i.e Atomic Mulliken partial charges, info about dipole moments etc...
+
+For more info about **input** options or general examples for each type of calculation you can check Gaussian's website directly [here](http://gaussian.com/keywords/):`http://gaussian.com/keywords/`
