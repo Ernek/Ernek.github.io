@@ -173,10 +173,10 @@ The HF Energy after several SCF cycles can normally be found by searching for <s
 <p>Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.</p>
 <h3>Generating the Input and Job-submission files</h3>
 <p>My strategy to automate this task was to create a python code with the following algorithm in mind:</p>
-<div class="highlight"><pre><span></span>1. Read the molecular geometry of interest from an .xyz file
-2. Generate the input file containing said .xyz coordinates and job directives
-  + Generating a single input file for each QM/basis sets combination
-3. Generate a Gaussian submissions script associated with each previously generated input file
+<div class="highlight"><pre><span></span><span class="err">1. Read the molecular geometry of interest from an .xyz file</span>
+<span class="err">2. Generate the input file containing said .xyz coordinates and job directives</span>
+<span class="err">  + Generating a single input file for each QM/basis sets combination</span>
+<span class="err">3. Generate a Gaussian submissions script associated with each previously generated input file</span>
 </pre></div>
 
 
@@ -206,8 +206,8 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
 <span class="c1"># Importing modules ######################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">fnmatch</span>              <span class="c1"># To read files</span>
 <span class="kn">from</span> <span class="nn">django.utils.text</span> <span class="kn">import</span> <span class="n">slugify</span>   <span class="c1"># To convert special characters to valid file_path names</span>
@@ -231,7 +231,7 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
         <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\*&#39;</span><span class="p">,</span> <span class="s1">&#39;-pol&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace * for text pol=polarization funcitons</span>
         <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\+&#39;</span><span class="p">,</span> <span class="s1">&#39;-dif&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace + for text dif=diffuse funcitons</span>
         <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;\(&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># replace left parenthesis with dash</span>
-        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[?,:!@#~`=$%^&amp;\)\[\]{}&lt;&gt;]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># remove some characters altogether</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[?,:!@#~`=$%^&amp;\)\[\]</span><span class="si">{}</span><span class="s1">&lt;&gt;]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span> <span class="c1"># remove some characters altogether</span>
         <span class="k">return</span> <span class="n">txt</span>
 
 <span class="k">def</span> <span class="nf">get_bse_local</span><span class="p">(</span><span class="n">loc_basis</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
@@ -311,19 +311,19 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fval</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
             <span class="k">for</span> <span class="n">bkey</span><span class="p">,</span><span class="n">bval</span> <span class="ow">in</span> <span class="n">basis_sets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">bkey</span><span class="p">)</span>
-                <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
                     <span class="k">pass</span>
                 <span class="k">if</span>  <span class="n">bkey</span> <span class="o">==</span> <span class="s1">&#39;core_valence&#39;</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">bval</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">bkey</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
-                        <span class="k">except</span> <span class="n">FileExistsError</span><span class="p">:</span>
+                        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
                             <span class="k">pass</span>
 
                         <span class="n">al_bse</span> <span class="o">=</span> <span class="n">get_bse_local</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;Al&#39;</span><span class="p">)</span>
@@ -335,7 +335,7 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
                             <span class="n">h_bse</span> <span class="o">=</span> <span class="n">get_bse_local</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">)</span>
                             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
                                 <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%c</span><span class="s1">hk=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                            <span class="o">+</span> <span class="n">f</span><span class="s2">&quot;#P {key_run_01}={key_method_01} {i}/Gen&quot;</span>                              
+                                            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;#P </span><span class="si">{key_run_01}</span><span class="s2">=</span><span class="si">{key_method_01}</span><span class="s2"> </span><span class="si">{i}</span><span class="s2">/Gen&quot;</span>                              
                                             <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">u_slugify</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
                                             <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">spin</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                             
                                             <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
@@ -366,7 +366,7 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
                                               <span class="o">+</span><span class="s1">&#39;foutend=&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span> <span class="s1">&#39;.out&#39;</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
                                               <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
                                               <span class="o">+</span><span class="s1">&#39;export GAUSS_SCRDIR=&quot;$(mkworkspace -q)&quot; &#39;</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                              <span class="o">+</span><span class="s1">&#39;g09 &lt; ${finit}${fend} &gt; ${finit}${foutend}&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                     
+                                              <span class="o">+</span><span class="s1">&#39;g09 &lt; $</span><span class="si">{finit}</span><span class="s1">$</span><span class="si">{fend}</span><span class="s1"> &gt; $</span><span class="si">{finit}</span><span class="s1">$</span><span class="si">{foutend}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>                     
                                               <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
                                             <span class="p">)</span>
                         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
@@ -377,12 +377,12 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
 
 
 <p>and finally the last bit to make our code modular and define some flags to specify for each molecular system. Flags include:</p>
-<div class="highlight"><pre><span></span>1. Name of the .xyz file
-2. Total Charge of the system
-3. Spin state of the system
-4. Method:
-    + HF single point calculation , if no flag present
-    + NMR shielding tensor calculation , if option &quot;-m nmr&quot; is included
+<div class="highlight"><pre><span></span><span class="err">1. Name of the .xyz file</span>
+<span class="err">2. Total Charge of the system</span>
+<span class="err">3. Spin state of the system</span>
+<span class="err">4. Method:</span>
+<span class="err">    + HF single point calculation , if no flag present</span>
+<span class="err">    + NMR shielding tensor calculation , if option &quot;-m nmr&quot; is included</span>
 </pre></div>
 
 
@@ -398,9 +398,9 @@ H <span class="m">3</span>.223616 <span class="m">10</span>.091097 <span class="
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Method selected is: {args.method}&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method selected is: </span><span class="si">{args.method}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Default method. Generating input with single point energy calculation&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Default method. Generating input with single point energy calculation&quot;</span><span class="p">)</span>
     <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">spin</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
 </pre></div>
 
