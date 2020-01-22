@@ -119,7 +119,7 @@ I am mostly covering elements of the first chapter of <strong>'Quantum Computati
 <p>A <strong>qubit</strong> is the fundamental unit of <em>quantum computation</em> (in the same way a <strong>bit</strong> is the fundamental unit of <em>classical computation</em>)</p>
 </blockquote>
 <p>This means that <strong>qubits</strong> are the <ins>representation of the possible states</ins> a <em>quantum computer</em> can use to perform computations.  </p>
-<p>In classical computers, a <strong>bit</strong> represents two possibilities: either <strong>0</strong> or <strong>1</strong>. All classical computations are based on this binary representation and are excecuted by combining <strong>bits</strong> in very specific ways (i.e computer gates). Calculations and programming decisions (i.e True is 1 and False is 0) are ultimately a combination of <strong>0</strong>s and <strong>1</strong>s.  </p>
+<p>In classical computers, a <strong>bit</strong> represents two possibilities: either <strong>0</strong> or <strong>1</strong>. All classical computations are based on this binary representation and are excecuted by combining <strong>bits</strong> in very specific ways (i.e computer gates). Calculations and programming decisions (i.e 1 is True and 0 equals False) are ultimately a combination of <strong>0</strong>s and <strong>1</strong>s.  </p>
 <p>In terms of hardware you can think of a <strong>qubit</strong> as the single physical entity able to generate <em>quantum states</em> available for quantum computation.</p>
 <p>However, if we separate ourselves from the hardware perspective, and think about the generation of <em>quantum states</em>, we can define a <strong>qubit</strong> more rigorously as:</p>
 <blockquote>
@@ -132,6 +132,9 @@ The difference between <strong>bits</strong> and <strong>qubits</strong> is that
 <p><p style="text-align: center;"> <img alt="superposition state" src="https://ernek.github.io/images/superposition.png">,</p> </p>
 <p>with <img alt="alpha" src="https://ernek.github.io/images/alpha.png"> and <img alt="beta" src="https://ernek.github.io/images/beta.png"> interrelated by the normalization relationship: <img alt="normalization relationship" src="https://ernek.github.io/images/norm_coefficients.png">        </p>
 </blockquote>
+<p>In other words, the <em>state</em> of a qubit is a vector in a two-dimensional complex vector space. </p>
+<p>The special states <strong>0</strong> and <strong>1</strong> are known as <em>computational basis states</em>, and form a orthonormal basis for this vector space. </p>
+<p>To adquire information about the qubit state we need to measure it. When we measure a qubit we obtain one of the two fundamental states |0&gt; or |1&gt;. We get either 0, with probability <img alt="alpha_squared" src="https://ernek.github.io/images/alpha_2.png">, or the result 1, with probability <img alt="beta_squared" src="https://ernek.github.io/images/beta_2.png">.</p>
   </div>
   <div class="tag-cloud">
     <p>
