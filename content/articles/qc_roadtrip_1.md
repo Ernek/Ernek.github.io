@@ -8,7 +8,7 @@ Authors: Ernek
 Summary: Basics of Quantum Computing I. Tunneling through the learning curve
 
 My intent with this post is to present some fundamental concepts related to Quantum Computing and document my learning experience. You can find several web reasources at the end of this post that I used to get accuanted with the field terminology and to understand the motivation behind the current funding resurgence towards this field. 
-I am mostly covering elements of the first chapter of **'Quantum Computation and Quantum Information'** by Michael A. Nielsen and Isaac L. Chuang (know as the basic textbook for Quantum Computing)    
+I am mostly covering elements of the first chapter of **'Quantum Computation and Quantum Information'** by Michael A. Nielsen and Isaac L. Chuang (known as the basic textbook for Quantum Computing)    
 
 # Quantum Computing Conceptual Framework. 
 # Basics I
@@ -18,7 +18,7 @@ I am mostly covering elements of the first chapter of **'Quantum Computation and
 
 ## Qubits 
 
-Let's start by giving a definition of a **qubit** (_**qu**antum **bit**_). You can get familiarized with the concept of a **qubit** entity using the following comparative statement:
+Let's start by giving a definition of a **qubit** (**_qu_**_antum_ **_bit_**). You can get familiarized with the concept of a **qubit** entity using the following comparative statement:
 
 > A **qubit** is the fundamental unit of _quantum computation_ (in the same way a **bit** is the fundamental unit of _classical computation_)
 
@@ -32,5 +32,7 @@ However, if we separate ourselves from the hardware perspective, and think about
 
 > An _abstract mathematical object_ used to represent a given set of _quantum computing states_ with properties that comply with the rules of quantum mechanics.
 
-The quantum analogy of the classical states **0** and **1**  would be the states **|0>** and **|1>** (ket notation).
+The quantum analogy of the classical states **0** and **1**  would be the states **|0>** and **|1>** respectively (ket notation).
+The difference between **bits** and **qubits** is that 
+> **qubits** can be in a _state_ other than |0> and |1>. They can also be in any possible _linear combination_ of states: ![superposition state](/content/images/superposition.png "df")     
 
