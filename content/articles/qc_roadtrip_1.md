@@ -24,7 +24,7 @@ Let's start by giving a definition of a **qubit** (**_qu_**_antum_ **_bit_**). Y
 
 This means that **qubits** are the <ins>representation of the possible states</ins> a _quantum computer_ can use to perform computations.  
 
-In classical computers, a **bit** represents two possibilities: either **0** or **1**. All classical computations are based on this binary representation and are excecuted by combining **bits** in very specific ways (i.e computer gates). Calculations and programming decisions (i.e True is 1 and False is 0) are ultimately a combination of **0**s and **1**s.  
+In classical computers, a **bit** represents two possibilities: either **0** or **1**. All classical computations are based on this binary representation and are excecuted by combining **bits** in very specific ways (i.e computer gates). Calculations and programming decisions (i.e 1 is True and 0 equals False) are ultimately a combination of **0**s and **1**s.  
 
 In terms of hardware you can think of a **qubit** as the single physical entity able to generate _quantum states_ available for quantum computation.
 
@@ -39,4 +39,10 @@ The difference between **bits** and **qubits** is that
 > <p style="text-align: center;"> ![superposition state]({static}/images/superposition.png),</p> 
 >
 > with ![alpha]({static}/images/alpha.png) and ![beta]({static}/images/beta.png) interrelated by the normalization relationship: ![normalization relationship]({static}/images/norm_coefficients.png)        
+
+In other words, the _state_ of a qubit is a vector in a two-dimensional complex vector space. 
+
+The special states **0** and **1** are known as _computational basis states_, and form a orthonormal basis for this vector space. 
+
+To adquire information about the qubit state we need to measure it. When we measure a qubit we obtain one of the two fundamental states |0> or |1>. We get either 0, with probability ![alpha_squared]({static}/images/alpha_2.png), or the result 1, with probability ![beta_squared]({static}/images/beta_2.png).
 
