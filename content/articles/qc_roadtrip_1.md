@@ -34,5 +34,5 @@ However, if we separate ourselves from the hardware perspective, and think about
 
 The quantum analogy of the classical states **0** and **1**  would be the states **|0>** and **|1>** respectively (ket notation).
 The difference between **bits** and **qubits** is that 
-> **qubits** can be in a _state_ other than |0> and |1>. They can also be in any possible _linear combination_ of states: ![superposition state](/content/images/superposition.png "df")     
+> **qubits** can be in a _state_ other than |0> and |1>. They can also be in any possible _linear combination_ of states: ![superposition state](superposition.png "df")     
 
