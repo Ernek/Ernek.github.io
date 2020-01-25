@@ -48,5 +48,4 @@ To adquire information about the qubit state we need to measure it. When we meas
 
 A **Bloch Sphere** is nice visual representation of the possible states and allowed transformations of single qubits:
 
-> <p style="text-align: center;"> ![bloch_sphere]({static}/images/blochsphere.png) </p>
-
+<p style="text-align: center;"> <img src="{static}/images/blochsphere.png" width="400"> </p>
