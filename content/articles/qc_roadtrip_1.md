@@ -7,7 +7,7 @@ Slug: quantumcomputing1
 Authors: Ernek
 Summary: Basics of Quantum Computing I. Tunneling through the learning curve
 
-My intent with this post is to present some fundamental concepts related to Quantum Computing and document my learning experience. You can find several web reasources at the end of this post that I used to get accuanted with the field terminology and to understand the motivation behind the current funding resurgence towards this field. 
+My intent with this post is to present some fundamental concepts related to Quantum Computing and document my learning experience. You can find several web resources —which I used to get accuanted with the field terminology and to understand the motivation behind the current funding resurgence towards this field— at the end of this post. 
 I am mostly covering elements of the first chapter of **'Quantum Computation and Quantum Information'** by Michael A. Nielsen and Isaac L. Chuang (known as the basic textbook for Quantum Computing)    
 
 # Quantum Computing Conceptual Framework. 
@@ -45,4 +45,8 @@ In other words, the _state_ of a qubit is a vector in a two-dimensional complex 
 The special states **0** and **1** are known as _computational basis states_, and form a orthonormal basis for this vector space. 
 
 To adquire information about the qubit state we need to measure it. When we measure a qubit we obtain one of the two fundamental states |0> or |1>. We get either 0, with probability ![alpha_squared]({static}/images/alpha_2.png), or the result 1, with probability ![beta_squared]({static}/images/beta_2.png).
+
+A **Bloch Sphere** is nice visual representation of the possible states and allowed transformations of single qubits:
+
+<p style="text-align: center;">![bloch_sphere]({static}/images/bloch_sphere.png)
 
