@@ -3,3 +3,4 @@ output
 venv
 __pycache__
 .vscode
+content/images/.DS_Store
