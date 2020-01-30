@@ -54,3 +54,7 @@ DEFAULT_PAGINATION = 10
 #RELATIVE_URLS = True
 
 STATIC_PATHS = ['images']
+
+LOAD_CONTENT_CACHE = False
+PLUGINS = ["render_math"]
+PLUGIN_PATHS = ["plugins/pelican-plugins"]
