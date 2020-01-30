@@ -10,7 +10,6 @@ Summary: Basics of Quantum Computing I. Tunneling through the learning curve
 My intent with this post is to present some fundamental concepts related to Quantum Computing and document my learning experience. You can find several web resources —which I used to get acquainted with the field terminology and to understand the motivation behind the current funding resurgence towards this field— at the end of this post. 
 I am mostly covering elements of the first chapter of **'Quantum Computation and Quantum Information'** by Michael A. Nielsen and Isaac L. Chuang (known as the basic textbook for Quantum Computing) 
 
-$E = mc^2$
 
 # Quantum Computing Conceptual Framework. 
 # Basics I
