@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Ernesto's Blog</title><link href="https://ernek.github.io/" rel="alternate"></link><link href="https://ernek.github.io/feeds/all.atom.xml" rel="self"></link><id>https://ernek.github.io/</id><updated>2020-01-22T09:00:00-08:00</updated><subtitle>Theoretical and Computational Chemistry</subtitle><entry><title>Quantum Computing Roadtrip</title><link href="https://ernek.github.io/quantumcomputing1.html" rel="alternate"></link><published>2020-01-22T09:00:00-08:00</published><updated>2020-01-22T09:00:00-08:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2020-01-22:/quantumcomputing1.html</id><summary type="html">&lt;p&gt;Basics of Quantum Computing I. Tunneling through the learning curve&lt;/p&gt;</summary><content type="html">&lt;p&gt;My intent with this post is to present some fundamental concepts related to Quantum Computing and document my learning experience. You can find several web resources —which I used to get acquainted with the field terminology and to understand the motivation behind the current funding resurgence towards this field— at the end of this post. 
 I am mostly covering elements of the first chapter of &lt;strong&gt;'Quantum Computation and Quantum Information'&lt;/strong&gt; by Michael A. Nielsen and Isaac L. Chuang (known as the basic textbook for Quantum Computing) &lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\(E = mc^2\)&lt;/span&gt;&lt;/p&gt;
 &lt;h1&gt;Quantum Computing Conceptual Framework.&lt;/h1&gt;
 &lt;h1&gt;Basics I&lt;/h1&gt;
 &lt;h2&gt;Quantum computation&lt;/h2&gt;
@@ -29,70 +28,7 @@ The difference between &lt;strong&gt;bits&lt;/strong&gt; and &lt;strong&gt;qubit
 &lt;p&gt;The special states &lt;strong&gt;0&lt;/strong&gt; and &lt;strong&gt;1&lt;/strong&gt; are known as &lt;em&gt;computational basis states&lt;/em&gt;, and form a orthonormal basis for this vector space. &lt;/p&gt;
 &lt;p&gt;To adquire information about the qubit state we need to measure it. When we measure a qubit we obtain one of the two fundamental states |0&amp;gt; or |1&amp;gt;. We get either 0, with probability &lt;img alt="alpha_squared" src="https://ernek.github.io/images/alpha_2.png"&gt;, or the result 1, with probability &lt;img alt="beta_squared" src="https://ernek.github.io/images/beta_2.png"&gt;.&lt;/p&gt;
 &lt;p&gt;A &lt;strong&gt;Bloch Sphere&lt;/strong&gt; is nice visual representation of the possible states and allowed transformations of single qubits:&lt;/p&gt;
-&lt;p style="text-align: center;"&gt; &lt;img src="https://ernek.github.io/images/blochsphere.png" width="400"&gt; &lt;/p&gt;
-
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</content><category term="misc"></category><category term="quantum computing"></category><category term="quantum mechanics"></category><category term="qubits"></category><category term="misc"></category></entry><entry><title>Running a calculation with Gaussian</title><link href="https://ernek.github.io/gaussianjob.html" rel="alternate"></link><published>2019-06-03T23:00:00-07:00</published><updated>2019-06-03T23:20:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-03:/gaussianjob.html</id><summary type="html">&lt;p&gt;How to run a job with Gaussian on Kamiak HPC cluster at WSU. Submission script, input and output files.&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
+&lt;p style="text-align: center;"&gt; &lt;img src="https://ernek.github.io/images/blochsphere.png" width="400"&gt; &lt;/p&gt;</content><category term="misc"></category><category term="quantum computing"></category><category term="quantum mechanics"></category><category term="qubits"></category><category term="misc"></category></entry><entry><title>Running a calculation with Gaussian</title><link href="https://ernek.github.io/gaussianjob.html" rel="alternate"></link><published>2019-06-03T23:00:00-07:00</published><updated>2019-06-03T23:20:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-03:/gaussianjob.html</id><summary type="html">&lt;p&gt;How to run a job with Gaussian on Kamiak HPC cluster at WSU. Submission script, input and output files.&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
 We will run Gaussian on the WSU HPC cluster &lt;strong&gt;Kamiak&lt;/strong&gt; where Gaussian09 is already installed and available to licensed users.&lt;/p&gt;
 &lt;h2&gt;Input File&lt;/h2&gt;
 &lt;p&gt;All directives of your job as well as the system's molecular geometry should be contained in the &lt;strong&gt;input&lt;/strong&gt; file. Here is an example of a &lt;strong&gt;HF single point energy calculation&lt;/strong&gt;:&lt;/p&gt;
