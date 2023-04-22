@@ -1,63 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Ernesto's Blog - misc</title><link href="https://ernek.github.io/" rel="alternate"></link><link href="https://ernek.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://ernek.github.io/</id><updated>2019-06-03T23:20:00-07:00</updated><subtitle>Theoretical and Computational Chemistry</subtitle><entry><title>Running a calculation with Gaussian</title><link href="https://ernek.github.io/gaussianjob.html" rel="alternate"></link><published>2019-06-03T23:00:00-07:00</published><updated>2019-06-03T23:20:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-03:/gaussianjob.html</id><summary type="html">&lt;p&gt;How to run a job with Gaussian on Kamiak HPC cluster at WSU. Submission script, input and output files.&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
-We will run Gaussian on the WSU HPC cluster &lt;strong&gt;Kamiak&lt;/strong&gt; where Gaussian09 is already installed and available to licensed users.&lt;/p&gt;
-&lt;h2&gt;Input File&lt;/h2&gt;
-&lt;p&gt;All directives of your job as well as the system's molecular geometry should be contained in the &lt;strong&gt;input&lt;/strong&gt; file. Here is an example of a &lt;strong&gt;HF single point energy calculation&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;%chk&lt;span class="o"&gt;=&lt;/span&gt;test_run&lt;span class="w"&gt;                    &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Checkpoint&lt;span class="w"&gt; &lt;/span&gt;file&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;save&lt;span class="w"&gt; &lt;/span&gt;info&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;restart&lt;span class="w"&gt; &lt;/span&gt;job&lt;span class="w"&gt;    &lt;/span&gt;
-&lt;span class="c1"&gt;#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets&lt;/span&gt;
-&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed
-job&lt;span class="w"&gt; &lt;/span&gt;name&lt;span class="w"&gt;                         &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Job&lt;span class="w"&gt; &lt;/span&gt;name&lt;span class="w"&gt; &lt;/span&gt;descriptor
-&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed
--1&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;                             &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Charge&lt;span class="w"&gt; &lt;/span&gt;Spin
-Al&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;.158934&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;.319204&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.139289&lt;span class="w"&gt;   &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Atomic-symbol&lt;span class="w"&gt; &lt;/span&gt;x-coord&lt;span class="w"&gt; &lt;/span&gt;y-coord&lt;span class="w"&gt; &lt;/span&gt;z-coord
-O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.204656&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;.33906&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;.772874
-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.524529&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;11&lt;/span&gt;.426276&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;.453445
-O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;.893735&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.419199&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;9&lt;/span&gt;.302062
-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.82317&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.510635&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;9&lt;/span&gt;.461939
-O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.621193&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.123312&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;.624101
-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.124667&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.404712&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.410292
-O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.723529&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.689556&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.948275
-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.223616&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.091097&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.387248
-&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt;                   &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need in order to run our first Gaussian calculation on the &lt;strong&gt;Kamiak&lt;/strong&gt; cluster is a submission script to launch our calculation on &lt;strong&gt;Kamiak&lt;/strong&gt; nodes.&lt;/p&gt;
-&lt;h2&gt;Submission Script for Gaussian on Kamiak&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class="c1"&gt;#SBATCH --job-name=test       ###Job Name&lt;/span&gt;
-&lt;span class="c1"&gt;#SBATCH --partition=kamiak    ###Partition on which to run&lt;/span&gt;
-&lt;span class="c1"&gt;#SBATCH --nodes=1             ###Number of nodes to use&lt;/span&gt;
-&lt;span class="c1"&gt;#SBATCH --ntasks-per-node=20   ###Number of tasks per node (aka MPI processes)&lt;/span&gt;
-&lt;span class="c1"&gt;#SBATCH --cpus-per-task=1    ###Number of cpus per task (aka OpenMP threads)&lt;/span&gt;
-&lt;span class="c1"&gt;#SBATCH --time=7-00:00:00&lt;/span&gt;
-module&lt;span class="w"&gt; &lt;/span&gt;load&lt;span class="w"&gt; &lt;/span&gt;gaussian&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;###Load gaussian module on Kamiak&lt;/span&gt;
-
-&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="w"&gt;                      &lt;/span&gt;&lt;span class="c1"&gt;###The base name of your input file  &lt;/span&gt;
-&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.com&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;
-&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.out&amp;#39;&lt;/span&gt;
-
-&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;GAUSS_SCRDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mkworkspace&lt;span class="w"&gt; &lt;/span&gt;-q&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;###Creates a workspace&lt;/span&gt;
-
-g09&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt;                                                        &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run &lt;strong&gt;Gaussian&lt;/strong&gt; with this submission script we would type:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sbatch&lt;span class="w"&gt; &lt;/span&gt;sub_g09.slurm&lt;span class="w"&gt; &lt;/span&gt;gaussian_test&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="c1"&gt;### &amp;quot;gaussian_test&amp;quot; is the base name of our input file  &lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
-Let's look at some of its elements before we explain one example with a bit more complicated workflow.&lt;/p&gt;
-&lt;h2&gt;Output File&lt;/h2&gt;
-&lt;p&gt;After the job has run to completion you can check the "gaussian_test.out" output-file located in the folder where you launched your calculation from. You can check the &lt;strong&gt;"Normal termination of Gaussian..."&lt;/strong&gt; sentence at the end of the output file.&lt;br&gt;
-The HF Energy after several SCF cycles can normally be found by searching for &lt;strong&gt;"SCF Done:  E(RHF)"&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;grep&lt;span class="w"&gt; &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SCF Done:  E(RHF)&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;gaussian_test.out
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;There are many other interesting properties you will find in the output file i.e Atomic Mulliken partial charges, info about dipole moments etc...&lt;/p&gt;
-&lt;p&gt;For more info about &lt;strong&gt;input&lt;/strong&gt; options or general examples for each type of calculation you can check Gaussian's website directly &lt;a href="http://gaussian.com/keywords/"&gt;here&lt;/a&gt; : &lt;code&gt;http://gaussian.com/keywords/&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Files related to this simple Gaussian calculation can be found &lt;a href="https://github.com/Ernek/NMR/tree/master/hf-run"&gt;here&lt;/a&gt;. (note: no output file provided)&lt;/p&gt;
-&lt;h2&gt;Exploring different basis sets and QM methods with Gaussian&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Ernesto's Blog - misc</title><link href="https://ernek.github.io/" rel="alternate"></link><link href="https://ernek.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://ernek.github.io/</id><updated>2023-04-22T12:00:00-07:00</updated><subtitle>Theoretical and Computational Chemistry</subtitle><entry><title>Exploring different basis sets and QM methods with Gaussian</title><link href="https://ernek.github.io/bset_qm_gaussian.html" rel="alternate"></link><published>2023-04-22T12:00:00-07:00</published><updated>2023-04-22T12:00:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2023-04-22:/bset_qm_gaussian.html</id><summary type="html">&lt;p&gt;How to run an automated job with Gaussian to explore the effect of basis sets and QM method on NMR calculations&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Exploring different basis sets and QM methods with Gaussian&lt;/h2&gt;
 &lt;p&gt;Now, let's increase complexity and try to automate the calculation of the magnetic shielding tensor of Al nucleus in aluminate. Let's use the same molecular geometry we used in our previous HF calculation. We will explore 2 different QM methods and investigate how does the Al shielding calculated value change with an increase in the size of the basis sets (let's use pC[X]VZ (X=D,T,Q) basis sets family) used to describe the Al atomic orbitals.&lt;/p&gt;
 &lt;h3&gt;Generating the Input and Job-submission files&lt;/h3&gt;
 &lt;p&gt;My strategy to automate this task was to create a python code with the following algorithm in mind:&lt;/p&gt;
@@ -298,5 +240,64 @@ conda&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span
 
 &lt;p&gt;This code runs with the latests versions of python 3 since it uses "formatted string literals" (f-string methods).
 You can find this python code in one piece in one of my Github repositories: &lt;a href="https://github.com/Ernek/NMR/tree/master/nmr-run"&gt;https://github.com/Ernek/NMR/tree/master/nmr-run&lt;/a&gt; . In its current version it explores HF, MP2, BLYP and PBE methods and uses a combination of Al core-valence basis sets (aug-/cc-pC[D,T,]VZ) combined with cc-pV[D,T,Q]Z for oxygen [O] and hydrogen [H] atoms. &lt;/p&gt;
+&lt;p&gt;Details about the code functionality are limited to most fundamental aspects. Test your outputs at your own discretion.&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;</content><category term="misc"></category><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry><entry><title>Running a calculation with Gaussian</title><link href="https://ernek.github.io/gaussianjob.html" rel="alternate"></link><published>2019-06-03T23:00:00-07:00</published><updated>2019-06-03T23:20:00-07:00</updated><author><name>Ernek</name></author><id>tag:ernek.github.io,2019-06-03:/gaussianjob.html</id><summary type="html">&lt;p&gt;How to run a job with Gaussian on Kamiak HPC cluster at WSU. Submission script, input and output files.&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post I will present essential steps needed to sucessfully run your first Gaussian calculations.
+We will run Gaussian on the WSU HPC cluster &lt;strong&gt;Kamiak&lt;/strong&gt; where Gaussian09 is already installed and available to licensed users.&lt;/p&gt;
+&lt;h2&gt;Input File&lt;/h2&gt;
+&lt;p&gt;All directives of your job as well as the system's molecular geometry should be contained in the &lt;strong&gt;input&lt;/strong&gt; file. Here is an example of a &lt;strong&gt;HF single point energy calculation&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;%chk&lt;span class="o"&gt;=&lt;/span&gt;test_run&lt;span class="w"&gt;                    &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Checkpoint&lt;span class="w"&gt; &lt;/span&gt;file&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;save&lt;span class="w"&gt; &lt;/span&gt;info&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;restart&lt;span class="w"&gt; &lt;/span&gt;job&lt;span class="w"&gt;    &lt;/span&gt;
+&lt;span class="c1"&gt;#P hf/cc-pVDZ                    ! Job directives . Hartree Fock single point calc with cc-pVDZ basis sets&lt;/span&gt;
+&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed
+job&lt;span class="w"&gt; &lt;/span&gt;name&lt;span class="w"&gt;                         &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Job&lt;span class="w"&gt; &lt;/span&gt;name&lt;span class="w"&gt; &lt;/span&gt;descriptor
+&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed
+-1&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;                             &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Charge&lt;span class="w"&gt; &lt;/span&gt;Spin
+Al&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;.158934&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;.319204&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.139289&lt;span class="w"&gt;   &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Atomic-symbol&lt;span class="w"&gt; &lt;/span&gt;x-coord&lt;span class="w"&gt; &lt;/span&gt;y-coord&lt;span class="w"&gt; &lt;/span&gt;z-coord
+O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.204656&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;.33906&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;.772874
+H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.524529&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;11&lt;/span&gt;.426276&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;.453445
+O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;.893735&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.419199&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;9&lt;/span&gt;.302062
+H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;.82317&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.510635&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;9&lt;/span&gt;.461939
+O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.621193&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.123312&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;.624101
+H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.124667&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13&lt;/span&gt;.404712&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.410292
+O&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.723529&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.689556&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.948275
+H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.223616&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.091097&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;.387248
+&lt;span class="w"&gt;                                 &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;Empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;...&lt;span class="w"&gt; &lt;/span&gt;This&lt;span class="w"&gt; &lt;/span&gt;empty&lt;span class="w"&gt; &lt;/span&gt;line&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;needed&lt;span class="w"&gt;                   &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this simple input file (let's save it and name it: "gaussian_test.com"), the only other thing we need in order to run our first Gaussian calculation on the &lt;strong&gt;Kamiak&lt;/strong&gt; cluster is a submission script to launch our calculation on &lt;strong&gt;Kamiak&lt;/strong&gt; nodes.&lt;/p&gt;
+&lt;h2&gt;Submission Script for Gaussian on Kamiak&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="c1"&gt;#SBATCH --job-name=test       ###Job Name&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --partition=kamiak    ###Partition on which to run&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --nodes=1             ###Number of nodes to use&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --ntasks-per-node=20   ###Number of tasks per node (aka MPI processes)&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --cpus-per-task=1    ###Number of cpus per task (aka OpenMP threads)&lt;/span&gt;
+&lt;span class="c1"&gt;#SBATCH --time=7-00:00:00&lt;/span&gt;
+module&lt;span class="w"&gt; &lt;/span&gt;load&lt;span class="w"&gt; &lt;/span&gt;gaussian&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;###Load gaussian module on Kamiak&lt;/span&gt;
+
+&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="w"&gt;                      &lt;/span&gt;&lt;span class="c1"&gt;###The base name of your input file  &lt;/span&gt;
+&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.com&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;
+&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.out&amp;#39;&lt;/span&gt;
+
+&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;GAUSS_SCRDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mkworkspace&lt;span class="w"&gt; &lt;/span&gt;-q&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;###Creates a workspace&lt;/span&gt;
+
+g09&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;fend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;finit&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;foutend&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt;                                                        &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let's save this piece of bash code and save it as: "sub_g09.slurm". Since our input file name is "gaussian_test.com" to run &lt;strong&gt;Gaussian&lt;/strong&gt; with this submission script we would type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sbatch&lt;span class="w"&gt; &lt;/span&gt;sub_g09.slurm&lt;span class="w"&gt; &lt;/span&gt;gaussian_test&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="c1"&gt;### &amp;quot;gaussian_test&amp;quot; is the base name of our input file  &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Running this job should generate an output-file named "gaussian_test.out" that will contain all the info of this calculation.
+Let's look at some of its elements before we explain one example with a bit more complicated workflow.&lt;/p&gt;
+&lt;h2&gt;Output File&lt;/h2&gt;
+&lt;p&gt;After the job has run to completion you can check the "gaussian_test.out" output-file located in the folder where you launched your calculation from. You can check the &lt;strong&gt;"Normal termination of Gaussian..."&lt;/strong&gt; sentence at the end of the output file.&lt;br&gt;
+The HF Energy after several SCF cycles can normally be found by searching for &lt;strong&gt;"SCF Done:  E(RHF)"&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;grep&lt;span class="w"&gt; &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;SCF Done:  E(RHF)&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;gaussian_test.out
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There are many other interesting properties you will find in the output file i.e Atomic Mulliken partial charges, info about dipole moments etc...&lt;/p&gt;
+&lt;p&gt;For more info about &lt;strong&gt;input&lt;/strong&gt; options or general examples for each type of calculation you can check Gaussian's website directly &lt;a href="http://gaussian.com/keywords/"&gt;here&lt;/a&gt; : &lt;code&gt;http://gaussian.com/keywords/&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Files related to this simple Gaussian calculation can be found &lt;a href="https://github.com/Ernek/NMR/tree/master/hf-run"&gt;here&lt;/a&gt;. (note: no output file provided)&lt;/p&gt;
 &lt;p&gt;Details about the code functionality are limited to most fundamental aspects. Test your outputs at your own discretion.&lt;/p&gt;
 &lt;p&gt;Have fun!&lt;/p&gt;</content><category term="misc"></category><category term="gaussian"></category><category term="kamiak"></category><category term="wsu"></category><category term="misc"></category></entry></feed>
